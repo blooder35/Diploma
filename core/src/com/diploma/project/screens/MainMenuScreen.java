@@ -2,7 +2,6 @@ package com.diploma.project.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.diploma.project.DiplomaProject;
@@ -12,6 +11,7 @@ import com.diploma.project.states.MainMenuStates;
 import static com.diploma.project.constants.MainMenuConstants.*;
 
 public class MainMenuScreen implements Screen {
+    //todo возможно переписать весь класс главного меню на stage и actors (уберёт код из инпут процессора)
     final DiplomaProject game;
     private MainMenuStates states;
     private Texture startButton;
@@ -86,7 +86,7 @@ public class MainMenuScreen implements Screen {
         } else if (states.isProceedToMultiplayer()) {
             game.setScreen(new MultiplayerScreen(game));
         } else if (states.isProceedtoExit()) {
-            //todo
+            Gdx.app.exit();
         }
     }
 }

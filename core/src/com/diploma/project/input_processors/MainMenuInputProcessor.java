@@ -65,8 +65,6 @@ public class MainMenuInputProcessor implements InputProcessor {
                 states.setAllToFalse();
             }
         }
-        System.out.println("current states are:" + states.isStartPressed() + states.isMultiplayerPressed() + states.isExitPressed());
-        System.out.println("proceed states are:" + states.isProceesToStart() + states.isProceedToMultiplayer() + states.isProceedtoExit());
         return true;
     }
 
