@@ -16,10 +16,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.diploma.project.DiplomaProject;
 import com.diploma.project.constants.Resources;
 import com.diploma.project.multiplayer.client.Client;
+import com.diploma.project.multiplayer.communication.messages.InitialMessage;
 import com.diploma.project.multiplayer.server.Server;
+import com.diploma.project.multiplayer.server.ServerConstants;
 import com.diploma.project.states.MultiplayerStates;
-
-import java.io.IOException;
 
 import static com.diploma.project.constants.MultiplayerConstants.*;
 
@@ -168,7 +168,13 @@ public class MultiplayerScreen implements Screen {
                     return;
                 }
                 try {
-                    Server.getInstance().start(Integer.parseInt(portField.getText()));
+                    int port = Integer.parseInt(portField.getText());
+                    Server.getInstance().start(port);
+                    Client.getInstance().start(ServerConstants.LOCALHOST, port);
+                    //todo debug message
+                    InitialMessage initialMessage = new InitialMessage(nameField.getText());
+                    initialMessage.sendMessageToServer();
+                    //todo здесь необходимо так же запускать слушателя клиента т.к. сервер - частный случай клиента
                 } catch (Exception e) {
                     showError("Error while creating a server, please check port");
                     return;
@@ -185,6 +191,7 @@ public class MultiplayerScreen implements Screen {
                 }
                 try {
                     Client.getInstance().start(ipField.getMessageText(), Integer.parseInt(portField.getText()));
+                    new InitialMessage(nameField.getText()).sendMessageToServer();
                 } catch (Exception e) {
                     showError("Error while connecting to a server, please check ip address and port");
                     return;

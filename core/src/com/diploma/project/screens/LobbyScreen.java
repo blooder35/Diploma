@@ -3,7 +3,6 @@ package com.diploma.project.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -14,8 +13,8 @@ import com.diploma.project.constants.LobbyConstants;
 import com.diploma.project.constants.Resources;
 import com.diploma.project.multiplayer.client.Client;
 import com.diploma.project.multiplayer.server.Server;
-import com.diploma.util.ActorHelper;
-import com.diploma.util.TextHelper;
+import com.diploma.project.util.ActorHelper;
+import com.diploma.project.util.TextHelper;
 
 import static com.diploma.project.constants.LobbyConstants.*;
 
@@ -54,20 +53,22 @@ public class LobbyScreen implements Screen {
     public void render(float delta) {
         stage.act();
         stage.draw();
-        player1Border.setVisible(true);
-        player2Border.setVisible(true);
-        player3Border.setVisible(true);
+        //todo тут будет обрабатываться только поток клиента на наличие новых сообщений
+        Client.getInstance().processClientMessages(this);
+//        player1Border.setVisible(true);
+//        player2Border.setVisible(true);
+//        player3Border.setVisible(true);
 //        player1KickButton.setVisible(true);
 //        player2KickButton.setVisible(true);
 //        player3KickButton.setVisible(true);
-        if ("".equals(player1Name.getText())) {
-            player1Name.setVisible(true);
-            player1Name.appendText("GENERAL");
-            player2Name.appendText("SOBAKA2");
-            player2Name.setVisible(true);
-            player3Name.appendText("SOBAKA3");
-            player3Name.setVisible(true);
-        }
+//        if ("".equals(player1Name.getText())) {
+//            player1Name.setVisible(true);
+//            player1Name.appendText("GENERAL");
+//            player2Name.appendText("SOBAKA2");
+//            player2Name.setVisible(true);
+//            player3Name.appendText("SOBAKA3");
+//            player3Name.setVisible(true);
+//        }
 
 
     }
@@ -97,6 +98,10 @@ public class LobbyScreen implements Screen {
 
     }
 
+    public void appendInfoMessage(String message) {
+        infoTextArea.appendText(message);
+    }
+
     private void setActors() {
         if (isServer)
             setServerButtons();
@@ -107,6 +112,7 @@ public class LobbyScreen implements Screen {
             public void changed(ChangeEvent event, Actor actor) {
                 if (isServer) {
                     Server.getInstance().stop();
+                    Client.getInstance().stop();
                 } else {
                     Client.getInstance().stop();
                 }

@@ -1,4 +1,4 @@
-package com.diploma.util;
+package com.diploma.project.util;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;

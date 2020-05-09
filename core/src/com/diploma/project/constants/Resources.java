@@ -10,8 +10,8 @@ public class Resources {
         public static final String LOBBY_START_BUTTON_PRESSED = "lobby/startButtonPressed.png";
         public static final String LOBBY_READY_BUTTON = "lobby/readyButton.png";
         public static final String LOBBY_READY_BUTTON_PRESSED = "lobby/readyButtonPressed.png";
-        public static final String PLAYER_KICK_BUTTON = "lobby/PlayerKickButton.png";
-        public static final String PLAYER_KICK_BUTTON_PRESSED = "lobby/PlayerKickButtonPressed.png";
+        public static final String PLAYER_KICK_BUTTON = "lobby/playerKickButton.png";
+        public static final String PLAYER_KICK_BUTTON_PRESSED = "lobby/playerKickButtonPressed.png";
         public static final String PLAYER_BACKGROUND = "lobby/playerBackground.png";
         public static final String SELECT_BOX_BACKGROUND = "lobby/selectBoxBackground.png";
         public static final String LEVEL_NAMEPLATE = "lobby/levelNameplate.png";

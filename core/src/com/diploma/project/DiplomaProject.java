@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.diploma.project.constants.Constants;
-import com.diploma.project.screens.LobbyScreen;
 import com.diploma.project.screens.MainMenuScreen;
 
 
@@ -19,9 +18,7 @@ public class DiplomaProject extends Game {
 	public void create () {
 		batch = new SpriteBatch();
 		viewPort = new StretchViewport(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
-//		this.setScreen(new MainMenuScreen(this));
-		//todo for debug purpose
-		this.setScreen(new LobbyScreen(this, false, "Soabaka"));
+		this.setScreen(new MainMenuScreen(this));
 	}
 
 	@Override

@@ -1,7 +1,7 @@
 package com.diploma.project.multiplayer.communication;
 
 public enum State {
-    MAIN_MENU("mainMenu"),
+    LOBBY_MENU("Lobby"),
     IN_GAME("inGame");
 
     private String value;
