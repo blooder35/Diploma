@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.diploma.project.constants.Constants;
@@ -13,9 +14,11 @@ import com.diploma.project.screens.MainMenuScreen;
 public class DiplomaProject extends Game {
 	public SpriteBatch batch;
 	public Viewport viewPort;
+	public Json json;
 	
 	@Override
 	public void create () {
+		json = new Json();
 		batch = new SpriteBatch();
 		viewPort = new StretchViewport(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
 		this.setScreen(new MainMenuScreen(this));

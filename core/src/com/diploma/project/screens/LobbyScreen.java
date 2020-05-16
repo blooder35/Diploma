@@ -9,9 +9,12 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.diploma.project.DiplomaProject;
+import com.diploma.project.constants.Levels;
 import com.diploma.project.constants.LobbyConstants;
 import com.diploma.project.constants.Resources;
 import com.diploma.project.multiplayer.client.Client;
+import com.diploma.project.multiplayer.communication.messages.client.lobby.LobbyClientMessage;
+import com.diploma.project.multiplayer.communication.messages.client.lobby.StartGameMessage;
 import com.diploma.project.multiplayer.server.Server;
 import com.diploma.project.util.ActorHelper;
 import com.diploma.project.util.TextHelper;
@@ -22,11 +25,17 @@ public class LobbyScreen implements Screen {
     DiplomaProject game;
     boolean isServer;
     String name;
+    boolean ready;
+    boolean gameStarted;
+    int selectedLevel;
     Stage stage;
     TextArea infoTextArea;
     Image player1Border;
     Image player2Border;
     Image player3Border;
+    Image player1ReadyBorder;
+    Image player2ReadyBorder;
+    Image player3ReadyBorder;
     Button player1KickButton;
     Button player2KickButton;
     Button player3KickButton;
@@ -40,7 +49,9 @@ public class LobbyScreen implements Screen {
         this.game = game;
         this.isServer = isServer;
         this.name = name;
+        this.ready = false;
         this.stage = new Stage(game.viewPort, game.batch);
+        this.gameStarted = false;
         setActors();
         Gdx.input.setInputProcessor(stage);
     }
@@ -54,23 +65,11 @@ public class LobbyScreen implements Screen {
         stage.act();
         stage.draw();
         //todo тут будет обрабатываться только поток клиента на наличие новых сообщений
-        Client.getInstance().processClientMessages(this);
-//        player1Border.setVisible(true);
-//        player2Border.setVisible(true);
-//        player3Border.setVisible(true);
-//        player1KickButton.setVisible(true);
-//        player2KickButton.setVisible(true);
-//        player3KickButton.setVisible(true);
-//        if ("".equals(player1Name.getText())) {
-//            player1Name.setVisible(true);
-//            player1Name.appendText("GENERAL");
-//            player2Name.appendText("SOBAKA2");
-//            player2Name.setVisible(true);
-//            player3Name.appendText("SOBAKA3");
-//            player3Name.setVisible(true);
-//        }
-
-
+        Client.getInstance().processClientMessages(this, game.json);
+        if (gameStarted) {
+            //todo не получится т.к. никто не знает какой уровень выбран)
+            game.setScreen(new GameScreen(game, isServer, selectedLevel));
+        }
     }
 
     @Override
@@ -99,7 +98,27 @@ public class LobbyScreen implements Screen {
     }
 
     public void appendInfoMessage(String message) {
-        infoTextArea.appendText(message);
+        infoTextArea.appendText("\n" + message);
+    }
+
+    public void setPlayer1Info(String name, boolean ready) {
+        appendPlayerInfo(player1Name, player1Border, player1ReadyBorder, player1KickButton, name, ready);
+    }
+
+    public void setPlayer2Info(String name, boolean ready) {
+        appendPlayerInfo(player2Name, player2Border, player2ReadyBorder, player2KickButton, name, ready);
+    }
+
+    public void setPlayer3Info(String name, boolean ready) {
+        appendPlayerInfo(player3Name, player3Border, player3ReadyBorder, player3KickButton, name, ready);
+    }
+
+    public void setGameStarted(){
+        gameStarted = true;
+    }
+
+    public void setSelectedLevel(int selectedLevel) {
+        this.selectedLevel = selectedLevel;
     }
 
     private void setActors() {
@@ -125,8 +144,11 @@ public class LobbyScreen implements Screen {
         String initialText = isServer ? "Server is started at:" + Server.getInstance().getServerFullIp() : "You are connected to server";
         infoTextArea = ActorHelper.addTextAreaActor(stage, initialText, INFO_AREA_X, INFO_AREA_Y, INFO_AREA_WIDTH, INFO_AREA_HEIGHT, infoTextFieldStyle, true);
         player1Border = ActorHelper.addImageActor(stage, Resources.Lobby.PLAYER_BACKGROUND, PLAYER_1_BACKGROUND_X, PLAYER_1_BACKGROUND_Y, false);
+        player1ReadyBorder = ActorHelper.addImageActor(stage, Resources.Lobby.PLAYER_BACKGROUND_READY, PLAYER_1_BACKGROUND_X, PLAYER_1_BACKGROUND_Y, false);
         player2Border = ActorHelper.addImageActor(stage, Resources.Lobby.PLAYER_BACKGROUND, PLAYER_2_BACKGROUND_X, PLAYER_2_BACKGROUND_Y, false);
+        player2ReadyBorder = ActorHelper.addImageActor(stage, Resources.Lobby.PLAYER_BACKGROUND_READY, PLAYER_2_BACKGROUND_X, PLAYER_2_BACKGROUND_Y, false);
         player3Border = ActorHelper.addImageActor(stage, Resources.Lobby.PLAYER_BACKGROUND, PLAYER_3_BACKGROUND_X, PLAYER_3_BACKGROUND_Y, false);
+        player3ReadyBorder = ActorHelper.addImageActor(stage, Resources.Lobby.PLAYER_BACKGROUND_READY, PLAYER_3_BACKGROUND_X, PLAYER_3_BACKGROUND_Y, false);
         TextField.TextFieldStyle playerNamesTextFieldStyle = TextHelper.getTextFieldStyle(Resources.TEXT_FONT, PLAYER_NAME_FONT_HEIGHT, Resources.TEXT_CURSOR, Resources.TEXT_SELECTION, Color.BLACK);
         player1Name = ActorHelper.addTextField(stage, "", PLAYER_1_NAME_X, PLAYER_1_NAME_Y, PLAYER_NAME_WIDTH, PLAYER_NAME_HEIGHT, false, true, playerNamesTextFieldStyle);
         player2Name = ActorHelper.addTextField(stage, "", PLAYER_2_NAME_X, PLAYER_2_NAME_Y, PLAYER_NAME_WIDTH, PLAYER_NAME_HEIGHT, false, true, playerNamesTextFieldStyle);
@@ -137,14 +159,18 @@ public class LobbyScreen implements Screen {
         ActorHelper.addButtonActor(stage, Resources.Lobby.LOBBY_START_BUTTON, Resources.Lobby.LOBBY_START_BUTTON_PRESSED, LobbyConstants.START_BUTTON_X, LobbyConstants.START_BUTTON_Y, true, new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                //todo
+                if (isEveryoneReady()) {
+                    new StartGameMessage((String) levelSelect.getSelected()).sendMessageToServer();
+                } else {
+                    infoTextArea.appendText("Not everyone ready yet");
+                }
             }
         });
         //тут добавляются невидимые кнопки, при присоединении пользователя они становятся видимыми
         player1KickButton = ActorHelper.addButtonActor(stage, Resources.Lobby.PLAYER_KICK_BUTTON, Resources.Lobby.PLAYER_KICK_BUTTON_PRESSED, PLAYER_1_KICK_BUTTON_X, PLAYER_1_KICK_BUTTON_Y, false, new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                //todo
+
             }
         });
         player2KickButton = ActorHelper.addButtonActor(stage, Resources.Lobby.PLAYER_KICK_BUTTON, Resources.Lobby.PLAYER_KICK_BUTTON_PRESSED, PLAYER_2_KICK_BUTTON_X, PLAYER_2_KICK_BUTTON_Y, false, new ChangeListener() {
@@ -170,15 +196,49 @@ public class LobbyScreen implements Screen {
                 LEVEL_SELECTION_WIDTH,
                 LEVEL_SELECTION_HEIGHT,
                 LEVEL_SELECTION_MAX_LIST_COUNT,
-                "One", "Two", "Three", "Four", "Five");
+                Levels.One.toString(), Levels.Two.toString(), Levels.Three.toString(), Levels.Four.toString(), Levels.Five.toString());
     }
 
     private void setClientButtons() {
         ActorHelper.addButtonActor(stage, Resources.Lobby.LOBBY_READY_BUTTON, Resources.Lobby.LOBBY_READY_BUTTON_PRESSED, LobbyConstants.START_BUTTON_X, LobbyConstants.START_BUTTON_Y, true, new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                //todo
+                LobbyClientMessage lobbyClientMessage = new LobbyClientMessage(name, !ready);
+                lobbyClientMessage.sendMessageToServer();
+                ready = !ready;
             }
         });
+    }
+
+    private void appendPlayerInfo(TextField playerName, Image playerBorder, Image playerReadyBorder, Button playerKickButton, String name, boolean ready) {
+        if (!"".equals(name)) {
+            playerName.setVisible(true);
+            playerName.setText(name);
+            if (ready) {
+                playerReadyBorder.setVisible(true);
+                playerBorder.setVisible(false);
+            } else {
+                playerBorder.setVisible(true);
+                playerReadyBorder.setVisible(false);
+            }
+            if (isServer) {
+                playerKickButton.setVisible(true);
+            }
+        } else if (playerName.isVisible()) {
+            playerName.setText("");
+            playerName.setVisible(false);
+            playerBorder.setVisible(false);
+            playerReadyBorder.setVisible(false);
+            playerKickButton.setVisible(false);
+        }
+    }
+
+    private boolean isEveryoneReady() {
+        //first is always a server
+        if (!"".equals(player2Name.getText()) && !player2ReadyBorder.isVisible())
+            return false;
+        if (!"".equals(player3Name.getText()) && !player3ReadyBorder.isVisible())
+            return false;
+        return true;
     }
 }

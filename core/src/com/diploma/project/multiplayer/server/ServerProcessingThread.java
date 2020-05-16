@@ -18,6 +18,7 @@ import com.diploma.project.multiplayer.communication.messages.server.lobby.Lobby
 import com.diploma.project.multiplayer.communication.messages.server.lobby.LobbyStateMessageServerChanger;
 
 import java.util.List;
+import java.util.Map;
 
 public class ServerProcessingThread extends Thread {
     private ApplicationState state;
@@ -29,13 +30,17 @@ public class ServerProcessingThread extends Thread {
 
     @Override
     public void run() {
+        Json json = new Json();
+        long delta = 0;
+        long startTime = TimeUtils.millis();
+        long prevCycleTime = 0;
         while (Server.getInstance().isStarted()) {
-            long startTime = TimeUtils.millis();
-            //todo вернуть вызов обратно в скобки
-            List<String> temp = Server.getInstance().getClientMessages();
-            System.out.println(temp.size());
-            processMessages(temp);
-            long delta = TimeUtils.timeSinceMillis(startTime);
+            prevCycleTime = TimeUtils.timeSinceMillis(startTime);
+            startTime = TimeUtils.millis();
+            //todo вернуть вызов обратно в скобки (убрать temp)
+            Map<Integer, List<String>> temp = Server.getInstance().getClientMessages();
+            processMessages(temp, json, prevCycleTime/1000f);
+            delta = TimeUtils.timeSinceMillis(startTime);
             if (delta < ServerConstants.SERVER_PROCESSING_CYCLE_TIME) {
                 try {
                     sleep(ServerConstants.SERVER_PROCESSING_CYCLE_TIME - delta);
@@ -52,9 +57,11 @@ public class ServerProcessingThread extends Thread {
 
     private void processMessages(Map<Integer, List<String>> messages, Json json, float delta) {
         //todo implementation of message reading
-        for (String message : messages) {
-            System.out.println("Got a message" + message);
-            CommunicationMessage.serverProcess(message);
+        for (Map.Entry<Integer, List<String>> entry : messages.entrySet()) {
+            for (String message : entry.getValue()) {
+                System.out.println("Got a message" + message);
+                CommunicationMessage.serverProcess(entry.getKey(), message, json);
+            }
         }
         //todo возможно для чистоты расширить это в отдельный метод (идея с продуктом: библиотекой) заодно убрать state(ведь он не относится к библиотеке)
         switch (state) {

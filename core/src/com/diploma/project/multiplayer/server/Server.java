@@ -4,8 +4,9 @@ import com.diploma.project.multiplayer.communication.ApplicationState;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.util.LinkedList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Класс отвечающий за создание и хранение подключений пользователей
@@ -63,12 +64,12 @@ public class Server {
         return serverFullIp;
     }
 
-    public List<String> getClientMessages() {
-        List<String> list = new LinkedList<>();
+    public Map<Integer, List<String>> getClientMessages() {
+        Map<Integer, List<String>> map = new HashMap<>();
         for (ServerClientThread client : serverThread.getClients()) {
-            list.addAll(client.getAndClearMessages());
+            map.put(client.getClientIdentificator(), client.getAndClearMessages());
         }
-        return list;
+        return map;
     }
 
     public void sendMessageToAll(String message) {

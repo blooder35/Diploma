@@ -17,16 +17,29 @@ public class ServerThread extends Thread {
     public ServerThread(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
         this.listening = new AtomicBoolean(true);
-        this.clients = new ArrayList<ServerClientThread>();
+        this.clients = new ArrayList<>();
     }
 
     @Override
     public void run() {
-        while (listening.get() && clients.size() < ServerConstants.MAXIMUM_PLAYERS) {
+        while (listening.get() && (clients.size() < ServerConstants.MAXIMUM_PLAYERS || isSpaceAvailable(clients))) {
             try {
                 ServerClientThread newPlayerThread = new ServerClientThread(serverSocket.accept());
-                clients.add(newPlayerThread);
-                newPlayerThread.start();
+                if (clients.size() < ServerConstants.MAXIMUM_PLAYERS) {
+                    newPlayerThread.setClientIdentificator(clients.size());
+                    clients.add(newPlayerThread);
+                    newPlayerThread.start();
+                } else {
+                    for (int i = 0; i < ServerConstants.MAXIMUM_PLAYERS; i++) {
+                        if (!clients.get(i).isActive()) {
+                            newPlayerThread.setClientIdentificator(i);
+                            clients.set(i, newPlayerThread);
+                            newPlayerThread.start();
+                            break;
+                        }
+                    }
+                }
+
             } catch (IOException e) {
                 //todo do nothing here just debug
                 System.out.println("Server accept hanged out of time");
@@ -42,5 +55,14 @@ public class ServerThread extends Thread {
 
     public List<ServerClientThread> getClients() {
         return clients;
+    }
+
+    private boolean isSpaceAvailable(List<ServerClientThread> clients) {
+        for (int i = ServerConstants.MAXIMUM_PLAYERS - 1; i >= 0; i--) {
+            if (!clients.get(i).isActive()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

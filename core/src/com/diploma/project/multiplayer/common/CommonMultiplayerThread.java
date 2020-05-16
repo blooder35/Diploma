@@ -44,6 +44,7 @@ public class CommonMultiplayerThread extends Thread {
                 }
             }
         } catch (IOException e) {
+            active.set(false);
             e.printStackTrace();
         }
     }

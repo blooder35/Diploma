@@ -2,9 +2,13 @@ package com.diploma.project.input_processors;
 
 import com.badlogic.gdx.InputProcessor;
 
-public class MultiplayerImputProcessor implements InputProcessor {
+public class GameInputProcessor implements InputProcessor {
+
+    //todo так или по другому
+
     @Override
     public boolean keyDown(int keycode) {
+        System.out.println("HELLP)");
         return false;
     }
 

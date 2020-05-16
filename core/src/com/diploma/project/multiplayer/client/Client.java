@@ -41,11 +41,10 @@ public class Client {
         return started;
     }
 
-    public void processClientMessages(Screen screen) {
+    public void processClientMessages(Screen screen, Json json) {
         for (String message : clientThread.getAndClearMessages()) {
-            Json json = new Json();
             CommunicationMessage serverMessage = json.fromJson(CommunicationMessage.class, message);
-            serverMessage.clientProcess(screen);
+            serverMessage.clientProcess(screen, json);
         }
     }
 

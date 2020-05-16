@@ -2,12 +2,19 @@ package com.diploma.project.multiplayer.communication;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.Json;
-import com.badlogic.gdx.utils.JsonWriter;
+import com.badlogic.gdx.utils.SerializationException;
 import com.diploma.project.multiplayer.client.Client;
-import com.diploma.project.multiplayer.server.Server;
+import com.diploma.project.multiplayer.communication.messages.client.game.GameCycleClientMessage;
+import com.diploma.project.multiplayer.communication.messages.client.lobby.LobbyMessage;
+import com.diploma.project.multiplayer.communication.messages.server.game.GameStateMessage;
+import com.diploma.project.multiplayer.communication.messages.server.lobby.LobbyStateMessage;
+import com.diploma.project.multiplayer.communication.processing.GameClientProcessor;
+import com.diploma.project.multiplayer.communication.processing.GameServerProcessor;
+import com.diploma.project.multiplayer.communication.processing.LobbyClientProcessor;
+import com.diploma.project.multiplayer.communication.processing.LobbyServerProcessor;
+import com.diploma.project.multiplayer.server.ServerConstants;
+import com.diploma.project.screens.GameScreen;
 import com.diploma.project.screens.LobbyScreen;
-import jdk.nashorn.internal.ir.debug.JSONWriter;
-import jdk.nashorn.internal.parser.JSONParser;
 
 /**
  * Сообщение для отправки серверу
@@ -26,22 +33,40 @@ public class CommunicationMessage {
         this.message = message;
     }
 
-    public static void serverProcess(String message) {
-        Json json = new Json();
+    public static void serverProcess(Integer clientIdentificator, String message, Json json) {
+        //todo тут будет первоначальный разбор сообщения и проброс в дальнейший обработчик остатка
         //todo пока что будем просто отправлять сообщение всем пользователям
-        Server.getInstance().sendMessageToAll(message);
+        try {
+            CommunicationMessage communicationMessage = json.fromJson(CommunicationMessage.class, message);
+            switch (communicationMessage.state) {
+                case LOBBY_MENU:
+                    LobbyServerProcessor.process(clientIdentificator, json.fromJson(LobbyMessage.class, communicationMessage.message));
+                    break;
+                case IN_GAME:
+                    GameServerProcessor.process(clientIdentificator, json.fromJson(GameCycleClientMessage.class, communicationMessage.message));
+                    break;
+            }
+        } catch (SerializationException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void clientProcess(Screen screen) {
-        if (screen instanceof LobbyScreen) {
-            ((LobbyScreen) screen).appendInfoMessage(message);
+    public void clientProcess(Screen screen, Json json) {
+        switch (state) {
+            case LOBBY_MENU:
+                if (screen instanceof LobbyScreen) {
+                    LobbyClientProcessor.process((LobbyScreen) screen, json.fromJson(LobbyStateMessage.class, message));
+                }
+            case IN_GAME:
+                if (screen instanceof GameScreen) {
+                    GameClientProcessor.process((GameScreen) screen, json.fromJson(GameStateMessage.class, message));
+                }
         }
     }
 
     public void sendToServer() {
         Json json = new Json();
-        json.setOutputType(JsonWriter.OutputType.json);
-        Client.getInstance().sendMessage(json.toJson(this));
+        Client.getInstance().sendMessage(json.toJson(this) + ServerConstants.MESSAGE_ESCAPE_CHARACTER);
     }
 
     public ApplicationState getState() {
