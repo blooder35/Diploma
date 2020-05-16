@@ -8,6 +8,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.diploma.project.actors.MapBlockActor;
+import com.diploma.project.actors.PlayerActor;
+import com.diploma.project.constants.ColorType;
+import com.diploma.project.maps.blocks.MapBlock;
 
 public class ActorHelper {
     public static Button addButtonActor(Stage stage, String drawableUpPath, String drawableDownPath, float positionX, float positionY,boolean visible, ChangeListener listener) {
@@ -67,5 +71,19 @@ public class ActorHelper {
         selectBox.setItems(items);
         stage.addActor(selectBox);
         return selectBox;
+    }
+
+    public static PlayerActor addPlayerActor(Stage stage, String imageFilePath, float positionX, float positionY,boolean visible) {
+        PlayerActor playerActor = new PlayerActor(new Texture(imageFilePath), ColorType.BLACK);
+        playerActor.setPosition(positionX, positionY);
+        playerActor.setVisible(visible);
+        stage.addActor(playerActor);
+        return playerActor;
+    }
+
+    public static MapBlockActor addMapBlockActor(Stage stage, MapBlock block) {
+        MapBlockActor mapBlockActor = new MapBlockActor(block);
+        stage.addActor(mapBlockActor);
+        return mapBlockActor;
     }
 }

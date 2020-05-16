@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.diploma.project.DiplomaProject;
+import com.diploma.project.constants.Resources;
 import com.diploma.project.input_processors.MainMenuInputProcessor;
 import com.diploma.project.states.MainMenuStates;
 
@@ -20,6 +21,7 @@ public class MainMenuScreen implements Screen {
     private Texture multiplayerButtonPressed;
     private Texture exitButton;
     private Texture exitButtonPressed;
+    private Texture mainMenuBackGround;
     private OrthographicCamera camera;
 
     public MainMenuScreen(final DiplomaProject game) {
@@ -32,6 +34,7 @@ public class MainMenuScreen implements Screen {
         multiplayerButtonPressed = new Texture(Gdx.files.internal("multiplayerButtonPressed.png"));
         exitButton = new Texture(Gdx.files.internal("exitButton.png"));
         exitButtonPressed = new Texture(Gdx.files.internal("exitButtonPressed.png"));
+        mainMenuBackGround = new Texture(Gdx.files.internal(Resources.MAIN_MENU_BACKGROUND));
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1920,1080);
         Gdx.input.setInputProcessor(new MainMenuInputProcessor(states,camera));
@@ -40,6 +43,7 @@ public class MainMenuScreen implements Screen {
     @Override
     public void render(float delta) {
         game.batch.begin();
+        game.batch.draw(mainMenuBackGround, 0, 0);
         Texture buttonToDraw = states.isStartPressed() ? startButtonPressed : startButton;
         game.batch.draw(buttonToDraw,START_BUTTON_X_POS, START_BUTTON_Y_POS);
         buttonToDraw = states.isMultiplayerPressed() ? multiplayerButtonPressed : multiplayerButton;

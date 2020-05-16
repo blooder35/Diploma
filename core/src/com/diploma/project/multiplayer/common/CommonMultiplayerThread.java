@@ -9,22 +9,20 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CommonMultiplayerThread extends Thread {
     private Socket socket = null;
     private AtomicBoolean active;
-    private Stack<String> messages;
+    private Queue<String> messages;
     private PrintWriter out;
 
     public CommonMultiplayerThread(Socket socket, String threadName) {
         super(threadName);
         this.socket = socket;
         active = new AtomicBoolean(true);
-        messages = new Stack<>();
+        messages = new ArrayDeque<>(ServerConstants.MAXIMUM_MESSAGES_STACK_COUNT);
         try {
             out = new PrintWriter(socket.getOutputStream(), true);
             this.socket.setSoTimeout(ServerConstants.SOCKET_READ_TIMEOUT);
@@ -60,7 +58,13 @@ public class CommonMultiplayerThread extends Thread {
 
     public synchronized List<String> getAndClearMessages() {
         //todo нужно подумать над синхронизацией вызова к хранилищу сообщений
-        List<String> tmp = new LinkedList<>(messages);
+        //todo remove trycatch
+        List<String> tmp = null;
+        try {
+            tmp = new LinkedList<>(messages);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("DEBUG");
+        }
         messages.clear();
         return tmp;
     }
@@ -72,10 +76,10 @@ public class CommonMultiplayerThread extends Thread {
 
     protected void appendClientMessage(String clientMessage) {
         if (messages.size() < ServerConstants.MAXIMUM_MESSAGES_STACK_COUNT) {
-            System.out.println("Received message from user");
-            messages.push(clientMessage);
+            System.out.println(this.getName() + "Received message from user");
+            messages.add(clientMessage);
         } else {
-            System.err.println("Error while adding client message to stack");
+            System.err.println(this.getName()+ "Error while adding client message to stack");
         }
     }
 }

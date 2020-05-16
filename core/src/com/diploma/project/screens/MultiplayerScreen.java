@@ -39,12 +39,16 @@ public class MultiplayerScreen implements Screen {
     private Button hostButton;
     private Button connectButton;
     private Button backButton;
+    private Image background;
     private Stage stage;
 
     public MultiplayerScreen(DiplomaProject game) {
         this.game = game;
         this.states = new MultiplayerStates();
         this.stage = new Stage(game.viewPort, game.batch);
+        this.background = new Image(new Texture(Gdx.files.internal(Resources.LOBBY_MENU_BACKGROUND)));
+        background.setPosition(0, 0);
+        stage.addActor(background);
         setButtons();
         setNameplates();
         setTextFields();
@@ -142,16 +146,16 @@ public class MultiplayerScreen implements Screen {
 
     private void setButtons() {
         //todo вынести в метод одинаковые присваивания
-        Drawable hostButtonDrawable = new Image(new Texture(Gdx.files.internal("hostButton.png"))).getDrawable();
-        Drawable hostButtonPressedDrawable = new Image(new Texture(Gdx.files.internal("hostButtonPressed.png"))).getDrawable();
+        Drawable hostButtonDrawable = new Image(new Texture(Gdx.files.internal(Resources.Multiplayer.MULTIPLAYER_HOST_BUTTON))).getDrawable();
+        Drawable hostButtonPressedDrawable = new Image(new Texture(Gdx.files.internal(Resources.Multiplayer.MULTIPLAYER_HOST_BUTTON_PRESSED))).getDrawable();
         hostButton = new Button(hostButtonDrawable, hostButtonPressedDrawable);
         hostButton.setPosition(HOST_BUTTON_X, HOST_BUTTON_Y);
-        Drawable connectButtonDrawable = new Image(new Texture(Gdx.files.internal("connectButton.png"))).getDrawable();
-        Drawable connectButtonPressedDrawable = new Image(new Texture(Gdx.files.internal("connectButtonPressed.png"))).getDrawable();
+        Drawable connectButtonDrawable = new Image(new Texture(Gdx.files.internal(Resources.Multiplayer.MULTIPLAYER_CONNECT_BUTTON))).getDrawable();
+        Drawable connectButtonPressedDrawable = new Image(new Texture(Gdx.files.internal(Resources.Multiplayer.MULTIPLAYER_CONNECT_BUTTON_PRESSED))).getDrawable();
         connectButton = new Button(connectButtonDrawable, connectButtonPressedDrawable);
         connectButton.setPosition(CONNECT_BUTTON_X, CONNECT_BUTTON_Y);
-        Drawable backButtonDrawable = new Image(new Texture(Gdx.files.internal("backButton.png"))).getDrawable();
-        Drawable backButtonPressedDrawable = new Image(new Texture(Gdx.files.internal("backButtonPressed.png"))).getDrawable();
+        Drawable backButtonDrawable = new Image(new Texture(Gdx.files.internal(Resources.Multiplayer.MULTIPLAYER_BACK_BUTTON))).getDrawable();
+        Drawable backButtonPressedDrawable = new Image(new Texture(Gdx.files.internal(Resources.Multiplayer.MULTIPLAYER_BACK_BUTTON_PRESSED))).getDrawable();
         backButton = new Button(backButtonDrawable, backButtonPressedDrawable);
         backButton.setPosition(BACK_BUTTON_X, BACK_BUTTON_Y);
         backButton.addListener(new ChangeListener() {

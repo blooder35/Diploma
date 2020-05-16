@@ -14,14 +14,14 @@ import jdk.nashorn.internal.parser.JSONParser;
  */
 public class CommunicationMessage {
     //todo продумать как туту должно быть
-    private State state;
+    private ApplicationState state;
     private String message;
 
     public CommunicationMessage() {
 
     }
 
-    public CommunicationMessage(State state, String message) {
+    public CommunicationMessage(ApplicationState state, String message) {
         this.state = state;
         this.message = message;
     }
@@ -44,11 +44,11 @@ public class CommunicationMessage {
         Client.getInstance().sendMessage(json.toJson(this));
     }
 
-    public State getState() {
+    public ApplicationState getState() {
         return state;
     }
 
-    public void setState(State state) {
+    public void setState(ApplicationState state) {
         this.state = state;
     }
 

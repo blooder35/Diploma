@@ -22,9 +22,9 @@ public class MultiplayerConstants {
     public static final int FONT_HEIGHT = 100;
     public static final int IP_FIELD_NAME_X = 720;
     public static final int IP_FIELD_NAME_Y = 460;
-    public static final int PORT_FIELD_NAME_X = 720;
+    public static final int PORT_FIELD_NAME_X = 640;
     public static final int PORT_FIELD_NAME_Y = 280;
-    public static final int NAME_FIELD_NAME_X = 720;
+    public static final int NAME_FIELD_NAME_X = 640;
     public static final int NAME_FIELD_NAME_Y = 640;
     public static final int HOST_BUTTON_X = 160;
     public static final int HOST_BUTTON_Y = 80;

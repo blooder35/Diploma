@@ -1,12 +1,12 @@
 package com.diploma.project.multiplayer.communication;
 
-public enum State {
+public enum ApplicationState {
     LOBBY_MENU("Lobby"),
     IN_GAME("inGame");
 
     private String value;
 
-    State(String value){
+    ApplicationState(String value){
         this.value = value;
     }
 

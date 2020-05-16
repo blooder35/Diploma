@@ -1,8 +1,6 @@
 package com.diploma.project.multiplayer.communication.messages;
 
-import com.badlogic.gdx.utils.Json;
-import com.diploma.project.multiplayer.communication.CommunicationMessage;
-import com.diploma.project.multiplayer.communication.State;
+import com.diploma.project.multiplayer.communication.ApplicationState;
 
 public abstract class CommonMessage {
 

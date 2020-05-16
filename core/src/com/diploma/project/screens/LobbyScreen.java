@@ -103,11 +103,13 @@ public class LobbyScreen implements Screen {
     }
 
     private void setActors() {
-        if (isServer)
+        if (isServer) {
             setServerButtons();
-        else
+        }
+        else {
             setClientButtons();
-        ActorHelper.addButtonActor(stage, "backButton.png", "backButtonPressed.png", LobbyConstants.BACK_BUTTON_X, LobbyConstants.BACK_BUTTON_Y, true, new ChangeListener() {
+        }
+        ActorHelper.addButtonActor(stage, Resources.Lobby.BACK_BUTTON, Resources.Lobby.BACK_BUTTON_PRESSED, LobbyConstants.BACK_BUTTON_X, LobbyConstants.BACK_BUTTON_Y, true, new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if (isServer) {

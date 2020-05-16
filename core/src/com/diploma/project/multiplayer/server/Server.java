@@ -1,5 +1,7 @@
 package com.diploma.project.multiplayer.server;
 
+import com.diploma.project.multiplayer.communication.ApplicationState;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.LinkedList;
@@ -38,7 +40,7 @@ public class Server {
         serverSocket.setSoTimeout(ServerConstants.SOCKET_ACCEPT_TIMEOUT);
         serverThread = new ServerThread(serverSocket);
         serverThread.start();
-        serverProcessingThread = new ServerProcessingThread();
+        serverProcessingThread = new ServerProcessingThread(ApplicationState.LOBBY_MENU);
         serverProcessingThread.start();
     }
 

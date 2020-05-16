@@ -34,6 +34,7 @@ public class Client {
     public void stop() {
         started = false;
         clientThread.setActive(false);
+        clientThread.interrupt();
     }
 
     public boolean isStarted() {
