@@ -5,6 +5,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.diploma.project.constants.Resources;
+
+import static com.diploma.project.constants.LobbyConstants.PLAYER_NAME_FONT_HEIGHT;
 
 public class TextHelper {
     public static TextField.TextFieldStyle getTextFieldStyle(String fontFilePath, float fontHeight, String cursorFilePath, String selectionFilePath, Color fontColor) {
@@ -32,6 +35,10 @@ public class TextHelper {
         BitmapFont font = new BitmapFont(Gdx.files.internal(fontFilePath));
         font.getData().setScale(fontHeight * font.getScaleY() / font.getLineHeight());
         return font;
+    }
+
+    public static TextField.TextFieldStyle getDefaultTextFieldStyle() {
+        return getTextFieldStyle(Resources.TEXT_FONT, PLAYER_NAME_FONT_HEIGHT, Resources.TEXT_CURSOR, Resources.TEXT_SELECTION, Color.BLACK);
     }
 
 }

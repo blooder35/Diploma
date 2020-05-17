@@ -9,7 +9,9 @@ public class GameServerProcessor {
     }
 
     public static void process(int clientIdentificator, GameCycleClientMessage message) {
-        changePlayerVector(clientIdentificator, message.getVectorX(), message.getVectorY());
+        if (!PlayerInfoServerSaver.getInstance().getPlayerAttributes(clientIdentificator).isFinished()) {
+            changePlayerVector(clientIdentificator, message.getVectorX(), message.getVectorY());
+        }
         if (message.isInteracting()) {
             PlayerInfoServerSaver.getInstance().setPlayerInteracting(clientIdentificator);
         }

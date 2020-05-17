@@ -68,7 +68,7 @@ public class LobbyScreen implements Screen {
         Client.getInstance().processClientMessages(this, game.json);
         if (gameStarted) {
             //todo не получится т.к. никто не знает какой уровень выбран)
-            game.setScreen(new GameScreen(game, isServer, selectedLevel));
+            game.setScreen(new GameScreen(game, isServer, name, selectedLevel));
         }
     }
 
@@ -113,7 +113,7 @@ public class LobbyScreen implements Screen {
         appendPlayerInfo(player3Name, player3Border, player3ReadyBorder, player3KickButton, name, ready);
     }
 
-    public void setGameStarted(){
+    public void setGameStarted() {
         gameStarted = true;
     }
 
@@ -124,8 +124,7 @@ public class LobbyScreen implements Screen {
     private void setActors() {
         if (isServer) {
             setServerButtons();
-        }
-        else {
+        } else {
             setClientButtons();
         }
         ActorHelper.addButtonActor(stage, Resources.Lobby.BACK_BUTTON, Resources.Lobby.BACK_BUTTON_PRESSED, LobbyConstants.BACK_BUTTON_X, LobbyConstants.BACK_BUTTON_Y, true, new ChangeListener() {

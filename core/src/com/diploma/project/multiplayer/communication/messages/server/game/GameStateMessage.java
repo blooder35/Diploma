@@ -10,12 +10,14 @@ import java.util.List;
 
 public class GameStateMessage extends ServerMessage {
     private List<PlayerGameInfo> playerGameInfo;
+    private boolean levelFinished;
 
     public GameStateMessage() {
         playerGameInfo = new ArrayList<>(ServerConstants.MAXIMUM_PLAYERS);
         for (int i = 0; i < ServerConstants.MAXIMUM_PLAYERS; i++) {
             playerGameInfo.add(new PlayerGameInfo(0,0, ColorType.NONE));
         }
+        levelFinished = false;
     }
 
     public void setPlayerGameInfo(int index, float posX, float postY, ColorType colorType) {
@@ -29,5 +31,13 @@ public class GameStateMessage extends ServerMessage {
     @Override
     protected ApplicationState getMessageState() {
         return ApplicationState.IN_GAME;
+    }
+
+    public boolean isLevelFinished() {
+        return levelFinished;
+    }
+
+    public void setLevelFinished(boolean levelFinished) {
+        this.levelFinished = levelFinished;
     }
 }

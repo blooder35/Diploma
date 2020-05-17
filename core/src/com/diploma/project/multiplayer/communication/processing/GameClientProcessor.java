@@ -16,5 +16,8 @@ public class GameClientProcessor {
             screen.changePlayerColorType(index, info.getColorType());
             index++;
         }
+        if (message.isLevelFinished()) {
+            screen.setLevelFinished();
+        }
     }
 }

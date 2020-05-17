@@ -27,6 +27,7 @@ import java.util.Map;
 public class GameScreen implements Screen {
     DiplomaProject game;
     boolean isServer;
+    String name;
     int currentLevel;
     Stage stage;
     Image redPlayerImage;
@@ -34,16 +35,18 @@ public class GameScreen implements Screen {
     PlayerTextureStorage playerTextureStorage;
     float x = 0;
     float y = 0;
+    boolean levelFinished;
     boolean interacting;
 
-    public GameScreen(DiplomaProject game, boolean isServer, int currentLevel) {
+    public GameScreen(DiplomaProject game, boolean isServer, String name, int currentLevel) {
         this.game = game;
         this.isServer = isServer;
+        this.name = name;
         this.currentLevel = currentLevel;
         this.stage = new Stage(game.viewPort, game.batch);
+        Gdx.input.setInputProcessor(stage);
         this.playerActors = new ArrayList<>(ServerConstants.MAXIMUM_PLAYERS);
         playerTextureStorage = new PlayerTextureStorage();
-        Gdx.input.setInputProcessor(stage);
         prepareImages();
         addInputListeners();
     }
@@ -58,6 +61,9 @@ public class GameScreen implements Screen {
         stage.act();
         inputProcessing();
         Client.getInstance().processClientMessages(this, game.json);
+        if (levelFinished) {
+            game.setScreen(new GameCompletedScreen(game, isServer, name));
+        }
         stage.draw();
     }
 
@@ -96,6 +102,10 @@ public class GameScreen implements Screen {
             playerActor.setColorType(colorType);
             playerActor.setTexture(playerTextureStorage.getPlayerTexture(colorType));
         }
+    }
+
+    public void setLevelFinished() {
+        levelFinished = true;
     }
 
     private void prepareImages() {

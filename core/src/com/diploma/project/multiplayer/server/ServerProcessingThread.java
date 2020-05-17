@@ -78,6 +78,7 @@ public class ServerProcessingThread extends Thread {
                 //todo так же нужно будет вынести в отдельный обработчик или метод (пока что без просчёта коллизий)
                 //todo возмножно вынести ещё выше
                 PlayerCollision playerCollision = new PlayerCollision(0, 0);
+                int finishedPlayersCounter = 0;
                 for (int i = 0; i < ServerConstants.MAXIMUM_PLAYERS; i++) {
                     //todo refactor to remove new local variable
                     Vector2 tempVector = PlayerInfoServerSaver.getInstance().getPlayerVectorAndClear(i);
@@ -95,6 +96,7 @@ public class ServerProcessingThread extends Thread {
                     player.setPosX(player.getPosX() + currentPlayerVector.x);
                     player.setPosY(player.getPosY() + currentPlayerVector.y);
 
+                    // взаимодействие с использующимися полями
                     if (playerAttributes.isInteracting()) {
                         playerAttributes.setInteracting(false);
                         for (InteractingMapBlock interactingMapBlocks : GameStateMessageServerChanger.getInstance().getLevel().getInteractingMapBlocks()) {
@@ -102,7 +104,15 @@ public class ServerProcessingThread extends Thread {
                         }
                     }
                     PlayerInfoServerSaver.getInstance().setNormalizedPlayerVector(i, currentPlayerVector);
+
+                    if (playerAttributes.isFinished()) {
+                        finishedPlayersCounter++;
+                    }
+
                     GameStateMessageServerChanger.getInstance().setPlayerGameInfo(i, player.getPosX() , player.getPosY(), playerAttributes.getColorType());
+                }
+                if (finishedPlayersCounter == GameStateMessageServerChanger.getInstance().getLevel().getMaximumPlayers()) {
+                    GameStateMessageServerChanger.getInstance().getCurrentState().setLevelFinished(true);
                 }
                 GameStateMessageServerChanger.getInstance().getCurrentState().sendMessageToAll();
                 break;
