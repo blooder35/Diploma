@@ -1,10 +1,7 @@
 package com.diploma.project.multiplayer.client;
 
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.utils.Json;
-import com.diploma.project.multiplayer.communication.CommunicationMessage;
-
 import java.net.Socket;
+import java.util.List;
 
 public class Client {
     private static volatile Client instance = null;
@@ -41,14 +38,11 @@ public class Client {
         return started;
     }
 
-    public void processClientMessages(Screen screen, Json json) {
-        for (String message : clientThread.getAndClearMessages()) {
-            CommunicationMessage serverMessage = json.fromJson(CommunicationMessage.class, message);
-            serverMessage.clientProcess(screen, json);
-        }
+    public List<String> getServerMessages() {
+        return clientThread.getAndClearMessages();
     }
 
-    public void sendMessage(String message) {
+    protected void sendMessage(String message) {
         clientThread.sendMessage(message);
     }
 }

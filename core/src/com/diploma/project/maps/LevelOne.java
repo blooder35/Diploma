@@ -3,7 +3,6 @@ package com.diploma.project.maps;
 import com.badlogic.gdx.math.Vector2;
 import com.diploma.project.constants.ColorType;
 import com.diploma.project.maps.blocks.*;
-import com.diploma.project.multiplayer.server.ServerConstants;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

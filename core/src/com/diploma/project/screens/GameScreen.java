@@ -3,7 +3,6 @@ package com.diploma.project.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.diploma.project.DiplomaProject;
@@ -14,15 +13,14 @@ import com.diploma.project.maps.Level;
 import com.diploma.project.maps.MapManager;
 import com.diploma.project.maps.blocks.InteractingMapBlock;
 import com.diploma.project.maps.blocks.MapBlock;
-import com.diploma.project.multiplayer.client.Client;
-import com.diploma.project.multiplayer.communication.messages.client.game.GameCycleClientMessage;
-import com.diploma.project.multiplayer.server.ServerConstants;
+import com.diploma.project.multiplayer.configuration.Configuration;
+import com.diploma.project.multiplayerImpl.communication.messages.client.game.GameCycleClientGameMessage;
+import com.diploma.project.multiplayerImpl.ClientMessageProcessor;
 import com.diploma.project.screens.storage.PlayerTextureStorage;
 import com.diploma.project.util.ActorHelper;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class GameScreen implements Screen {
     DiplomaProject game;
@@ -45,7 +43,7 @@ public class GameScreen implements Screen {
         this.currentLevel = currentLevel;
         this.stage = new Stage(game.viewPort, game.batch);
         Gdx.input.setInputProcessor(stage);
-        this.playerActors = new ArrayList<>(ServerConstants.MAXIMUM_PLAYERS);
+        this.playerActors = new ArrayList<>(Configuration.getInstance().getMaximumAllowedClients());
         playerTextureStorage = new PlayerTextureStorage();
         prepareImages();
         addInputListeners();
@@ -60,7 +58,7 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         stage.act();
         inputProcessing();
-        Client.getInstance().processClientMessages(this, game.json);
+        ClientMessageProcessor.getInstance().processClientMessages(this, game.json);
         if (levelFinished) {
             game.setScreen(new GameCompletedScreen(game, isServer, name));
         }
@@ -110,7 +108,7 @@ public class GameScreen implements Screen {
 
     private void prepareImages() {
         Level level = MapManager.getInstance().getLevel(currentLevel);
-        for (int i = 0; i < ServerConstants.MAXIMUM_PLAYERS; i++) {
+        for (int i = 0; i < Configuration.getInstance().getMaximumAllowedClients(); i++) {
             playerActors.add(i, ActorHelper.addPlayerActor(stage, Resources.Game.BLACK_PLAYER_CIRCLE_IMAGE, level.getPlayerStartPosition(i).x, level.getPlayerStartPosition(i).y, true));
         }
         for (InteractingMapBlock block : level.getInteractingMapBlocks()) {
@@ -144,7 +142,7 @@ public class GameScreen implements Screen {
             interacting = true;
         }
         if (x != 0 || y != 0 || interacting) {
-            new GameCycleClientMessage(x, y, interacting).sendMessageToServer();
+            new GameCycleClientGameMessage(x, y, interacting).sendMessageToServer();
         }
         interacting = false;
     }

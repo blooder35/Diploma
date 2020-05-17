@@ -1,5 +1,7 @@
 package com.diploma.project.multiplayer.server;
 
+import com.diploma.project.multiplayer.configuration.Configuration;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.ArrayList;
@@ -22,17 +24,17 @@ public class ServerThread extends Thread {
 
     @Override
     public void run() {
-        while (listening.get() && (clients.size() < ServerConstants.MAXIMUM_PLAYERS || isSpaceAvailable(clients))) {
+        while (listening.get() && (clients.size() < com.diploma.project.multiplayer.configuration.Configuration.getInstance().getMaximumAllowedClients() || isSpaceAvailable(clients))) {
             try {
                 ServerClientThread newPlayerThread = new ServerClientThread(serverSocket.accept());
-                if (clients.size() < ServerConstants.MAXIMUM_PLAYERS) {
-                    newPlayerThread.setClientIdentificator(clients.size());
+                if (clients.size() < com.diploma.project.multiplayer.configuration.Configuration.getInstance().getMaximumAllowedClients()) {
+                    newPlayerThread.setClientIdentifier(clients.size());
                     clients.add(newPlayerThread);
                     newPlayerThread.start();
                 } else {
-                    for (int i = 0; i < ServerConstants.MAXIMUM_PLAYERS; i++) {
+                    for (int i = 0; i < com.diploma.project.multiplayer.configuration.Configuration.getInstance().getMaximumAllowedClients(); i++) {
                         if (!clients.get(i).isActive()) {
-                            newPlayerThread.setClientIdentificator(i);
+                            newPlayerThread.setClientIdentifier(i);
                             clients.set(i, newPlayerThread);
                             newPlayerThread.start();
                             break;
@@ -58,7 +60,7 @@ public class ServerThread extends Thread {
     }
 
     private boolean isSpaceAvailable(List<ServerClientThread> clients) {
-        for (int i = ServerConstants.MAXIMUM_PLAYERS - 1; i >= 0; i--) {
+        for (int i = Configuration.getInstance().getMaximumAllowedClients() - 1; i >= 0; i--) {
             if (!clients.get(i).isActive()) {
                 return true;
             }

@@ -3,9 +3,10 @@ package com.diploma.project.constants;
 public class GameConstants {
     public static final float MOVEMENT_SPEED = 20;
     public static final float PLAYER_COLLISION_SPEED_COEFFICIENT = 0.1f;
-//    public static final float PLAYER_COLLISION_SPEED_COEFFICIENT = 0.8f;
+    //    public static final float PLAYER_COLLISION_SPEED_COEFFICIENT = 0.8f;
     public static final float PLAYER_MOVEMENT_COEF = 0.98f;
-//    public static final float PLAYER_MOVEMENT_COEF = 1f;
+    //    public static final float PLAYER_MOVEMENT_COEF = 1f;
+    public static final String LOCALHOST = "127.0.0.1";
 
     public static final float SMALL_BLOCK_HEIGHT = 40;
     public static final float SMALL_BLOCK_WIDTH = 40;

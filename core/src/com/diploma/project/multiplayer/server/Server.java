@@ -1,6 +1,6 @@
 package com.diploma.project.multiplayer.server;
 
-import com.diploma.project.multiplayer.communication.ApplicationState;
+import com.diploma.project.multiplayer.configuration.Configuration;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -17,7 +17,6 @@ public class Server {
     private String serverFullIp;
     private boolean started;
     private ServerThread serverThread;
-    private ServerProcessingThread serverProcessingThread;
 
     private Server() {
     }
@@ -38,11 +37,9 @@ public class Server {
         started = true;
         serverFullIp = serverSocket.getInetAddress() + ":" + serverSocket.getLocalPort();
         System.out.println("SocketServer started at " + serverSocket.getInetAddress() + ":" + serverSocket.getLocalPort());
-        serverSocket.setSoTimeout(ServerConstants.SOCKET_ACCEPT_TIMEOUT);
+        serverSocket.setSoTimeout(Configuration.getInstance().getSocketAcceptTimeout());
         serverThread = new ServerThread(serverSocket);
         serverThread.start();
-        serverProcessingThread = new ServerProcessingThread(ApplicationState.LOBBY_MENU);
-        serverProcessingThread.start();
     }
 
     public void stop() {
@@ -67,12 +64,12 @@ public class Server {
     public Map<Integer, List<String>> getClientMessages() {
         Map<Integer, List<String>> map = new HashMap<>();
         for (ServerClientThread client : serverThread.getClients()) {
-            map.put(client.getClientIdentificator(), client.getAndClearMessages());
+            map.put(client.getClientIdentifier(), client.getAndClearMessages());
         }
         return map;
     }
 
-    public void sendMessageToAll(String message) {
+    void sendMessageToAll(String message) {
         for (ServerClientThread client : serverThread.getClients()) {
             client.sendMessage(message);
         }

@@ -1,6 +1,6 @@
 package com.diploma.project.multiplayer.util;
 
-import com.diploma.project.multiplayer.server.ServerConstants;
+import com.diploma.project.multiplayer.configuration.Configuration;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,7 +11,7 @@ public class CommunicationHelper {
         StringBuilder sb = new StringBuilder();
         int value;
         while ((value = in.read()) != -1) {
-            if (value == (int) ServerConstants.MESSAGE_ESCAPE_CHARACTER) {
+            if (value == (int) Configuration.getInstance().getMessageEscapeCharacter()) {
                 in.mark(0);
                 in.reset();
                 return sb.toString();

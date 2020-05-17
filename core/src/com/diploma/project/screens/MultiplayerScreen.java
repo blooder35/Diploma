@@ -14,11 +14,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.diploma.project.DiplomaProject;
+import com.diploma.project.constants.GameConstants;
 import com.diploma.project.constants.Resources;
 import com.diploma.project.multiplayer.client.Client;
-import com.diploma.project.multiplayer.communication.messages.client.lobby.LobbyClientMessage;
+import com.diploma.project.multiplayerImpl.communication.ApplicationState;
+import com.diploma.project.multiplayerImpl.communication.messages.client.lobby.LobbyClientGameMessage;
+import com.diploma.project.multiplayerImpl.ServerProcessingThreadImpl;
 import com.diploma.project.multiplayer.server.Server;
-import com.diploma.project.multiplayer.server.ServerConstants;
 import com.diploma.project.states.MultiplayerStates;
 
 import static com.diploma.project.constants.MultiplayerConstants.*;
@@ -174,9 +176,10 @@ public class MultiplayerScreen implements Screen {
                 try {
                     int port = Integer.parseInt(portField.getText());
                     Server.getInstance().start(port);
-                    Client.getInstance().start(ServerConstants.LOCALHOST, port);
+                    new ServerProcessingThreadImpl(ApplicationState.LOBBY_MENU).start();
+                    Client.getInstance().start(GameConstants.LOCALHOST, port);
                     //todo debug message
-                    LobbyClientMessage lobbyClientMessage = new LobbyClientMessage(nameField.getText(), false);
+                    LobbyClientGameMessage lobbyClientMessage = new LobbyClientGameMessage(nameField.getText(), false);
                     lobbyClientMessage.sendMessageToServer();
                     //todo здесь необходимо так же запускать слушателя клиента т.к. сервер - частный случай клиента
                 } catch (Exception e) {
@@ -195,7 +198,7 @@ public class MultiplayerScreen implements Screen {
                 }
                 try {
                     Client.getInstance().start(ipField.getMessageText(), Integer.parseInt(portField.getText()));
-                    new LobbyClientMessage(nameField.getText(),false).sendMessageToServer();
+                    new LobbyClientGameMessage(nameField.getText(),false).sendMessageToServer();
                 } catch (Exception e) {
                     showError("Error while connecting to a server, please check ip address and port");
                     return;

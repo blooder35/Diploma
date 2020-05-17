@@ -5,17 +5,17 @@ import com.diploma.project.multiplayer.common.CommonMultiplayerThread;
 import java.net.Socket;
 
 public class ServerClientThread extends CommonMultiplayerThread {
-    private int clientIdentificator;
+    private int clientIdentifier;
 
     public ServerClientThread(Socket socket) {
         super(socket, "ServerClientThread");
     }
 
-    public int getClientIdentificator() {
-        return clientIdentificator;
+    public int getClientIdentifier() {
+        return clientIdentifier;
     }
 
-    public void setClientIdentificator(int clientIdentificator) {
-        this.clientIdentificator = clientIdentificator;
+    public void setClientIdentifier(int clientIdentifier) {
+        this.clientIdentifier = clientIdentifier;
     }
 }

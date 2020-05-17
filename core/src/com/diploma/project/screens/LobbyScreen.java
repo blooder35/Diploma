@@ -13,9 +13,10 @@ import com.diploma.project.constants.Levels;
 import com.diploma.project.constants.LobbyConstants;
 import com.diploma.project.constants.Resources;
 import com.diploma.project.multiplayer.client.Client;
-import com.diploma.project.multiplayer.communication.messages.client.lobby.LobbyClientMessage;
-import com.diploma.project.multiplayer.communication.messages.client.lobby.StartGameMessage;
+import com.diploma.project.multiplayerImpl.communication.messages.client.lobby.LobbyClientGameMessage;
+import com.diploma.project.multiplayerImpl.communication.messages.client.lobby.StartGameGameMessage;
 import com.diploma.project.multiplayer.server.Server;
+import com.diploma.project.multiplayerImpl.ClientMessageProcessor;
 import com.diploma.project.util.ActorHelper;
 import com.diploma.project.util.TextHelper;
 
@@ -65,7 +66,7 @@ public class LobbyScreen implements Screen {
         stage.act();
         stage.draw();
         //todo тут будет обрабатываться только поток клиента на наличие новых сообщений
-        Client.getInstance().processClientMessages(this, game.json);
+        ClientMessageProcessor.getInstance().processClientMessages(this, game.json);
         if (gameStarted) {
             //todo не получится т.к. никто не знает какой уровень выбран)
             game.setScreen(new GameScreen(game, isServer, name, selectedLevel));
@@ -159,7 +160,7 @@ public class LobbyScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if (isEveryoneReady()) {
-                    new StartGameMessage((String) levelSelect.getSelected()).sendMessageToServer();
+                    new StartGameGameMessage((String) levelSelect.getSelected()).sendMessageToServer();
                 } else {
                     infoTextArea.appendText("Not everyone ready yet");
                 }
@@ -202,7 +203,7 @@ public class LobbyScreen implements Screen {
         ActorHelper.addButtonActor(stage, Resources.Lobby.LOBBY_READY_BUTTON, Resources.Lobby.LOBBY_READY_BUTTON_PRESSED, LobbyConstants.START_BUTTON_X, LobbyConstants.START_BUTTON_Y, true, new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                LobbyClientMessage lobbyClientMessage = new LobbyClientMessage(name, !ready);
+                LobbyClientGameMessage lobbyClientMessage = new LobbyClientGameMessage(name, !ready);
                 lobbyClientMessage.sendMessageToServer();
                 ready = !ready;
             }

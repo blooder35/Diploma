@@ -5,7 +5,7 @@ import com.diploma.project.constants.ColorType;
 import com.diploma.project.constants.GameConstants;
 import com.diploma.project.maps.blocks.InteractingMapBlock;
 import com.diploma.project.maps.blocks.MapBlock;
-import com.diploma.project.multiplayer.communication.messages.server.game.PlayerAttributes;
+import com.diploma.project.multiplayerImpl.communication.messages.server.game.PlayerAttributes;
 
 public class CollisionHelper {
 
