@@ -7,5 +7,9 @@ public abstract class ServerMessage {
         Server.getInstance().sendMessageToAll(getMessageStringToSend() + Configuration.getInstance().getMessageEscapeCharacter());
     }
 
+    public void sendMessageTo(int index) {
+        Server.getInstance().sendMessageTo(index, getMessageStringToSend() + Configuration.getInstance().getMessageEscapeCharacter());
+    }
+
     protected abstract String getMessageStringToSend();
 }

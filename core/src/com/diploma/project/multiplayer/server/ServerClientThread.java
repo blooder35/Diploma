@@ -11,6 +11,10 @@ public class ServerClientThread extends CommonMultiplayerThread {
         super(socket, "ServerClientThread");
     }
 
+    public ServerClientThread(Socket socket, String name) {
+        super(socket, name);
+    }
+
     public int getClientIdentifier() {
         return clientIdentifier;
     }

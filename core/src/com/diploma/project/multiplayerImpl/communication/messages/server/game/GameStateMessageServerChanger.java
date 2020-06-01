@@ -18,8 +18,7 @@ public class GameStateMessageServerChanger {
         return INSTANCE;
     }
 
-    //todo тут было syncronized (убрал для теста)
-    public void setPlayerGameInfo(int index, float posX, float posY, ColorType colorType) {
+    public synchronized void setPlayerGameInfo(int index, float posX, float posY, ColorType colorType) {
         state.setPlayerGameInfo(index, posX, posY, colorType);
     }
 

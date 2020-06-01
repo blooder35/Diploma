@@ -12,7 +12,6 @@ public class LobbyStateMessageServerChanger {
         return INSTANCE;
     }
 
-    //todo возможно убрать joined
     public synchronized void setPlayerState(Integer index,String name, boolean ready) {
         state.setPlayerState(index, name, ready);
     }

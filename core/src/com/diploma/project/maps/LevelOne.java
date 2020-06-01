@@ -17,7 +17,6 @@ public class LevelOne implements Level {
     private final List<InteractingMapBlock> interactingMapBlocks;
 
     public LevelOne() {
-        //todo встваить рисование зон
         playerStartPositions = new ArrayList<>(MAXIMUM_PLAYERS);
         playerStartPositions.add(0, new Vector2(920, 500));
         playerStartPositions.add(1, new Vector2(760, 500));

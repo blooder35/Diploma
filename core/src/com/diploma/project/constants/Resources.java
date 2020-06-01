@@ -1,7 +1,6 @@
 package com.diploma.project.constants;
 
 public class Resources {
-    //todo заполнить ресурсы и сделать получение файлов по константам во всех файлах)
     public static final String TEXT_FONT = "diplomaFont.fnt";
     public static final String TEXT_CURSOR = "cursor.png";
     public static final String TEXT_SELECTION = "selection.png";
@@ -33,11 +32,6 @@ public class Resources {
     }
 
     public class Game {
-        //todo remove
-//        public static final String RED_PLAYER_IMAGE = "game/redPlayer.png";
-//        public static final String GREEN_PLAYER_IMAGE = "game/greenPlayer.png";
-//        public static final String BLUE_PLAYER_IMAGE = "game/bluePlayer.png";
-//        public static final String WHITE_PLAYER_IMAGE = "game/whitePlayer.png";
         public static final String WHITE_PLAYER_CIRCLE_IMAGE = "game/whitePlayerCircle.png";
         public static final String RED_PLAYER_CIRCLE_IMAGE = "game/redPlayerCircle.png";
         public static final String GREEN_PLAYER_CIRCLE_IMAGE = "game/greenPlayerCircle.png";

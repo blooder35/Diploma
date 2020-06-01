@@ -32,7 +32,7 @@ public class ServerThread extends Thread {
                     clients.add(newPlayerThread);
                     newPlayerThread.start();
                 } else {
-                    for (int i = 0; i < com.diploma.project.multiplayer.configuration.Configuration.getInstance().getMaximumAllowedClients(); i++) {
+                    for (int i = 0; i < Configuration.getInstance().getMaximumAllowedClients(); i++) {
                         if (!clients.get(i).isActive()) {
                             newPlayerThread.setClientIdentifier(i);
                             clients.set(i, newPlayerThread);
@@ -43,11 +43,9 @@ public class ServerThread extends Thread {
                 }
 
             } catch (IOException e) {
-                //todo do nothing here just debug
-                System.out.println("Server accept hanged out of time");
+                checkInactiveClients();
             }
         }
-        //todo check and delete
         System.out.println("SERVER STOPPED LISTENING FOR A NEW PLAYERS");
     }
 
@@ -66,5 +64,15 @@ public class ServerThread extends Thread {
             }
         }
         return false;
+    }
+
+
+    private void checkInactiveClients() {
+        for (int i = 0; i < clients.size(); i++) {
+            if (!clients.get(i).isActive()) {
+                clients.get(i).interrupt();
+                clients.set(i, new EmptyServerClientThread());
+            }
+        }
     }
 }

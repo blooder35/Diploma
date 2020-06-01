@@ -65,10 +65,8 @@ public class LobbyScreen implements Screen {
     public void render(float delta) {
         stage.act();
         stage.draw();
-        //todo тут будет обрабатываться только поток клиента на наличие новых сообщений
         ClientMessageProcessor.getInstance().processClientMessages(this, game.json);
         if (gameStarted) {
-            //todo не получится т.к. никто не знает какой уровень выбран)
             game.setScreen(new GameScreen(game, isServer, name, selectedLevel));
         }
     }
@@ -170,7 +168,7 @@ public class LobbyScreen implements Screen {
         player1KickButton = ActorHelper.addButtonActor(stage, Resources.Lobby.PLAYER_KICK_BUTTON, Resources.Lobby.PLAYER_KICK_BUTTON_PRESSED, PLAYER_1_KICK_BUTTON_X, PLAYER_1_KICK_BUTTON_Y, false, new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-
+                //todo
             }
         });
         player2KickButton = ActorHelper.addButtonActor(stage, Resources.Lobby.PLAYER_KICK_BUTTON, Resources.Lobby.PLAYER_KICK_BUTTON_PRESSED, PLAYER_2_KICK_BUTTON_X, PLAYER_2_KICK_BUTTON_Y, false, new ChangeListener() {

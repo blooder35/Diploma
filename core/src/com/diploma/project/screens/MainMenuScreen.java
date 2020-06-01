@@ -12,7 +12,6 @@ import com.diploma.project.states.MainMenuStates;
 import static com.diploma.project.constants.MainMenuConstants.*;
 
 public class MainMenuScreen implements Screen {
-    //todo возможно переписать весь класс главного меню на stage и actors (уберёт код из инпут процессора)
     final DiplomaProject game;
     private MainMenuStates states;
     private Texture startButton;
@@ -27,7 +26,6 @@ public class MainMenuScreen implements Screen {
     public MainMenuScreen(final DiplomaProject game) {
         this.game = game;
         states = new MainMenuStates();
-        //todo load images for the main menu
         startButton = new Texture(Gdx.files.internal("startButton.png"));
         startButtonPressed = new Texture(Gdx.files.internal("startButtonPressed.png"));
         multiplayerButton = new Texture(Gdx.files.internal("multiplayerButton.png"));
@@ -81,12 +79,10 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void dispose() {
-        //todo dispose of all used things
     }
 
     private void proceedScreenChangeEvents() {
         if (states.isProceesToStart()) {
-            //todo
         } else if (states.isProceedToMultiplayer()) {
             game.setScreen(new MultiplayerScreen(game));
         } else if (states.isProceedtoExit()) {

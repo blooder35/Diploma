@@ -13,6 +13,7 @@ import com.diploma.project.maps.Level;
 import com.diploma.project.maps.MapManager;
 import com.diploma.project.maps.blocks.InteractingMapBlock;
 import com.diploma.project.maps.blocks.MapBlock;
+import com.diploma.project.multiplayer.client.Client;
 import com.diploma.project.multiplayer.configuration.Configuration;
 import com.diploma.project.multiplayerImpl.communication.messages.client.game.GameCycleClientGameMessage;
 import com.diploma.project.multiplayerImpl.ClientMessageProcessor;
@@ -46,7 +47,6 @@ public class GameScreen implements Screen {
         this.playerActors = new ArrayList<>(Configuration.getInstance().getMaximumAllowedClients());
         playerTextureStorage = new PlayerTextureStorage();
         prepareImages();
-        addInputListeners();
     }
 
     @Override
@@ -117,10 +117,6 @@ public class GameScreen implements Screen {
         for (MapBlock block : level.getMapBlocks()) {
             ActorHelper.addMapBlockActor(stage, block);
         }
-    }
-
-    private void addInputListeners() {
-        //todo
     }
 
     private void inputProcessing() {

@@ -32,7 +32,6 @@ public class MultiplayerScreen implements Screen {
     private TextField ipField;
     private TextField portField;
     private TextArea errorArea;
-    //todo можно убрать
     private Image ipTextImage;
     private Image portTextImage;
     private Image inputBordersImageForIp;
@@ -89,11 +88,9 @@ public class MultiplayerScreen implements Screen {
 
     @Override
     public void dispose() {
-        //todo
     }
 
     private void setTextFields() {
-        //todo вынести в метод одинаковые присваивания
         TextField.TextFieldStyle textFieldStyle = new TextField.TextFieldStyle();
         textFieldStyle.fontColor = Color.BLACK;
         textFieldStyle.cursor = new Image(new Texture(Gdx.files.internal(Resources.TEXT_CURSOR))).getDrawable();
@@ -125,7 +122,6 @@ public class MultiplayerScreen implements Screen {
     }
 
     private void setNameplates() {
-        //todo вынести в метод одинаковые присваивания
         Image nameTextImage = new Image(new Texture(Gdx.files.internal("name.png")));
         nameTextImage.setPosition(NAME_FIELD_NAME_X, NAME_FIELD_NAME_Y);
         ipTextImage = new Image(new Texture(Gdx.files.internal("ipAddress.png")));
@@ -147,7 +143,6 @@ public class MultiplayerScreen implements Screen {
     }
 
     private void setButtons() {
-        //todo вынести в метод одинаковые присваивания
         Drawable hostButtonDrawable = new Image(new Texture(Gdx.files.internal(Resources.Multiplayer.MULTIPLAYER_HOST_BUTTON))).getDrawable();
         Drawable hostButtonPressedDrawable = new Image(new Texture(Gdx.files.internal(Resources.Multiplayer.MULTIPLAYER_HOST_BUTTON_PRESSED))).getDrawable();
         hostButton = new Button(hostButtonDrawable, hostButtonPressedDrawable);
@@ -169,19 +164,17 @@ public class MultiplayerScreen implements Screen {
         hostButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (nameField.getText().isEmpty()) {
-                    showError("Field name cannot be empty");
+                if (errorInFields()) {
                     return;
                 }
                 try {
+                    String address = ipField.getText();
                     int port = Integer.parseInt(portField.getText());
-                    Server.getInstance().start(port);
+                    Server.getInstance().start(address, port);
                     new ServerProcessingThreadImpl(ApplicationState.LOBBY_MENU).start();
-                    Client.getInstance().start(GameConstants.LOCALHOST, port);
-                    //todo debug message
+                    Client.getInstance().start(ipField.getText(), port);
                     LobbyClientGameMessage lobbyClientMessage = new LobbyClientGameMessage(nameField.getText(), false);
                     lobbyClientMessage.sendMessageToServer();
-                    //todo здесь необходимо так же запускать слушателя клиента т.к. сервер - частный случай клиента
                 } catch (Exception e) {
                     showError("Error while creating a server, please check port");
                     return;
@@ -192,12 +185,11 @@ public class MultiplayerScreen implements Screen {
         connectButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (nameField.getText().isEmpty()) {
-                    showError("Field name cannot be empty");
+                if (errorInFields()) {
                     return;
                 }
                 try {
-                    Client.getInstance().start(ipField.getMessageText(), Integer.parseInt(portField.getText()));
+                    Client.getInstance().start(ipField.getText(), Integer.parseInt(portField.getText()));
                     new LobbyClientGameMessage(nameField.getText(),false).sendMessageToServer();
                 } catch (Exception e) {
                     showError("Error while connecting to a server, please check ip address and port");
@@ -209,6 +201,14 @@ public class MultiplayerScreen implements Screen {
         stage.addActor(hostButton);
         stage.addActor(connectButton);
         stage.addActor(backButton);
+    }
+
+    private boolean errorInFields() {
+        if (nameField.getText().isEmpty() || ipField.getText().isEmpty() || portField.getText().isEmpty()) {
+            showError("You should specify all fields");
+            return true;
+        }
+        return false;
     }
 
     private void showError(String message) {

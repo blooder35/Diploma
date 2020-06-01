@@ -9,7 +9,6 @@ import com.diploma.project.multiplayerImpl.communication.messages.server.game.Pl
 
 public class CollisionHelper {
 
-    //todo возможно сделать похожий для двух игроков?
     public static Vector2 solidWallBounceCollision(Collision player, MapBlock wall, float posX, float posY, Vector2 playerVector, ColorType colorType) {
         player.setX(posX + playerVector.x);
         player.setY(posY + playerVector.y);

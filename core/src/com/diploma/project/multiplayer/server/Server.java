@@ -3,7 +3,7 @@ package com.diploma.project.multiplayer.server;
 import com.diploma.project.multiplayer.configuration.Configuration;
 
 import java.io.IOException;
-import java.net.ServerSocket;
+import java.net.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,14 +32,15 @@ public class Server {
         return instance;
     }
 
-    public void start(int port) throws Exception {
-        ServerSocket serverSocket = new ServerSocket(port);
-        started = true;
+    public void start(String address, int port) throws Exception {
+        ServerSocket serverSocket = new ServerSocket();
+        serverSocket.bind(new InetSocketAddress(address, port));
         serverFullIp = serverSocket.getInetAddress() + ":" + serverSocket.getLocalPort();
         System.out.println("SocketServer started at " + serverSocket.getInetAddress() + ":" + serverSocket.getLocalPort());
         serverSocket.setSoTimeout(Configuration.getInstance().getSocketAcceptTimeout());
         serverThread = new ServerThread(serverSocket);
         serverThread.start();
+        started = true;
     }
 
     public void stop() {
@@ -70,8 +71,12 @@ public class Server {
     }
 
     void sendMessageToAll(String message) {
-        for (ServerClientThread client : serverThread.getClients()) {
-            client.sendMessage(message);
+        for (int i = 0; i < serverThread.getClients().size(); i++) {
+            serverThread.getClients().get(i).sendMessage(message);
         }
+    }
+
+    void sendMessageTo(int index, String message) {
+        serverThread.getClients().get(index).sendMessage(message);
     }
 }

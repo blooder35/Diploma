@@ -10,6 +10,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CommonMultiplayerThread extends Thread {
@@ -22,7 +23,7 @@ public class CommonMultiplayerThread extends Thread {
         super(threadName);
         this.socket = socket;
         active = new AtomicBoolean(true);
-        messages = new ArrayDeque<>(Configuration.getInstance().getMaximumMessagesQueueLength());
+        messages = new ConcurrentLinkedQueue<>();
         try {
             out = new PrintWriter(socket.getOutputStream(), true);
             this.socket.setSoTimeout(Configuration.getInstance().getSocketReadTimeout());
@@ -57,13 +58,9 @@ public class CommonMultiplayerThread extends Thread {
     }
 
     public synchronized List<String> getAndClearMessages() {
-        //todo нужно подумать над синхронизацией вызова к хранилищу сообщений
-        //todo remove trycatch
-        List<String> tmp = null;
-        try {
-            tmp = new LinkedList<>(messages);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("DEBUG");
+        List<String> tmp = new LinkedList<>();
+        for (int i = 0; i < messages.size();i++) {
+            tmp.add(messages.remove());
         }
         messages.clear();
         return tmp;
@@ -71,7 +68,9 @@ public class CommonMultiplayerThread extends Thread {
 
     public void sendMessage(String message) {
         out.print(message);
-        out.flush();
+        if (out.checkError()) {
+            active.set(false);
+        }
     }
 
     protected void appendClientMessage(String clientMessage) {

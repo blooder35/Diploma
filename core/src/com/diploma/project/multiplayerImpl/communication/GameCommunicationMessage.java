@@ -18,7 +18,6 @@ import com.diploma.project.screens.LobbyScreen;
  * Сообщение для отправки серверу
  */
 public class GameCommunicationMessage {
-    //todo продумать как туту должно быть
     private com.diploma.project.multiplayerImpl.communication.ApplicationState state;
     private String message;
 
@@ -32,8 +31,6 @@ public class GameCommunicationMessage {
     }
 
     public static void serverProcess(Integer clientIdentificator, String message, Json json) {
-        //todo тут будет первоначальный разбор сообщения и проброс в дальнейший обработчик остатка
-        //todo пока что будем просто отправлять сообщение всем пользователям
         try {
             GameCommunicationMessage gameCommunicationMessage = json.fromJson(GameCommunicationMessage.class, message);
             switch (gameCommunicationMessage.state) {

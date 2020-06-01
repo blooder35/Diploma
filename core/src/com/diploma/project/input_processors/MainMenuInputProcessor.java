@@ -38,7 +38,7 @@ public class MainMenuInputProcessor implements InputProcessor {
             Vector3 input = new Vector3(screenX, screenY, 0);
             input = camera.unproject(input);
             if (onStartButton(input.x,input.y)) {
-                states.setStartPressed(true);
+//                states.setStartPressed(true);
             } else if (onMultiplayerButton(input.x, input.y)) {
                 states.setMultiplayerPressed(true);
             } else if (onExitButton(input.x, input.y)) {
@@ -56,7 +56,7 @@ public class MainMenuInputProcessor implements InputProcessor {
             Vector3 input = new Vector3(screenX, screenY, 0);
             input = camera.unproject(input);
             if (onStartButton(input.x, input.y) && states.isStartPressed()) {
-                states.setProceesToStart(true);
+//                states.setProceesToStart(true);
             } else if (onMultiplayerButton(input.x, input.y) && states.isMultiplayerPressed()) {
                 states.setProceedToMultiplayer(true);
             } else if (onExitButton(input.x, input.y) && states.isExitPressed()) {

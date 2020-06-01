@@ -33,14 +33,12 @@ public class ServerProcessingThreadImpl extends ServerProcessingThread {
 
     @Override
     protected void processMessages(Map<Integer, List<String>> messages, float delta) {
-        //todo implementation of message reading
         for (Map.Entry<Integer, List<String>> entry : messages.entrySet()) {
             for (String message : entry.getValue()) {
                 System.out.println("Got a message" + message);
                 GameCommunicationMessage.serverProcess(entry.getKey(), message, json);
             }
         }
-        //todo возможно для чистоты расширить это в отдельный метод (идея с продуктом: библиотекой) заодно убрать state(ведь он не относится к библиотеке)
         switch (state) {
             case LOBBY_MENU:
                 LobbyStateGameMessage lobbyState = LobbyStateMessageServerChanger.getInstance().getCurrentState();
@@ -52,12 +50,9 @@ public class ServerProcessingThreadImpl extends ServerProcessingThread {
                 }
                 break;
             case IN_GAME:
-                //todo так же нужно будет вынести в отдельный обработчик или метод (пока что без просчёта коллизий)
-                //todo возмножно вынести ещё выше
                 PlayerCollision playerCollision = new PlayerCollision(0, 0);
                 int finishedPlayersCounter = 0;
                 for (int i = 0; i < Configuration.getInstance().getMaximumAllowedClients(); i++) {
-                    //todo refactor to remove new local variable
                     Vector2 tempVector = PlayerInfoServerSaver.getInstance().getPlayerVectorAndClear(i);
                     Vector2 normalizedIncreementPlayerVector = new Vector2(tempVector.x * delta * GameConstants.MOVEMENT_SPEED, tempVector.y * delta * GameConstants.MOVEMENT_SPEED);
                     Vector2 currentPlayerVector = PlayerInfoServerSaver.getInstance().addNormalizedPlayerVector(i, normalizedIncreementPlayerVector);
