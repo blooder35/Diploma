@@ -4,22 +4,40 @@ import com.badlogic.gdx.utils.Json;
 import com.diploma.project.multiplayerImpl.communication.ApplicationState;
 import com.diploma.project.multiplayerImpl.communication.messages.ClientGameMessage;
 
+/**
+ * Общий вид сообщения пользователя, находящегося в лобби
+ */
 public class LobbyGameMessage extends ClientGameMessage {
     private LobbyMessageType type;
     private String message;
 
+    /**
+     * Конструктор
+     */
     public LobbyGameMessage() {
     }
 
+    /**
+     * Конструктор
+     *
+     * @param type тип сообщения Лобби
+     * @param message строка сообщения
+     */
     public LobbyGameMessage(LobbyMessageType type, String message) {
         this.type = type;
         this.message = message;
     }
 
+    /**
+     * @return тип сообщения из лобби
+     */
     public LobbyMessageType getType() {
         return type;
     }
 
+    /**
+     * @return строка сообщения
+     */
     public String getMessage() {
         return message;
     }
@@ -30,7 +48,10 @@ public class LobbyGameMessage extends ClientGameMessage {
         return json.toJson(new LobbyGameMessage(getMessageType(), json.toJson(this)));
     }
 
-    LobbyMessageType getMessageType(){
+    /**
+     * @return тип сообщения из лобби
+     */
+    LobbyMessageType getMessageType() {
         return null;
     }
 

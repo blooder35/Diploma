@@ -8,10 +8,19 @@ import com.diploma.project.states.MainMenuStates;
 
 import static com.diploma.project.constants.MainMenuConstants.*;
 
+/**
+ * Процессор, для обработки нажатий в главном меню игры
+ */
 public class MainMenuInputProcessor implements InputProcessor {
     MainMenuStates states;
     OrthographicCamera camera;
 
+    /**
+     * Конструктор
+     *
+     * @param states текущее состояние главного меню
+     * @param camera камера
+     */
     public MainMenuInputProcessor(MainMenuStates states, OrthographicCamera camera) {
         this.states = states;
         this.camera = camera;
@@ -37,7 +46,7 @@ public class MainMenuInputProcessor implements InputProcessor {
         if (button == Input.Buttons.LEFT) {
             Vector3 input = new Vector3(screenX, screenY, 0);
             input = camera.unproject(input);
-            if (onStartButton(input.x,input.y)) {
+            if (onStartButton(input.x, input.y)) {
 //                states.setStartPressed(true);
             } else if (onMultiplayerButton(input.x, input.y)) {
                 states.setMultiplayerPressed(true);
@@ -83,6 +92,13 @@ public class MainMenuInputProcessor implements InputProcessor {
         return false;
     }
 
+    /**
+     * Определение нажатия на кнопку start
+     *
+     * @param x x координата нажатия
+     * @param y y координата нажатия
+     * @return true - нажатие произошло, false - нажатия не произошло
+     */
     private boolean onStartButton(float x, float y) {
         if (x > START_BUTTON_X_POS && x < START_BUTTON_X_POS + BUTTON_WIDTH &&
                 y > START_BUTTON_Y_POS && y < START_BUTTON_Y_POS + BUTTON_HEIGHT) {
@@ -91,6 +107,13 @@ public class MainMenuInputProcessor implements InputProcessor {
         return false;
     }
 
+    /**
+     * Определение нажатия на кнопку multiplayer
+     *
+     * @param x x координата нажатия
+     * @param y y координата нажатия
+     * @return true - нажатие произошло, false - нажатия не произошло
+     */
     private boolean onMultiplayerButton(float x, float y) {
         if (x > MULTIPLAYER_BUTTON_X_POS && x < MULTIPLAYER_BUTTON_X_POS + BUTTON_WIDTH &&
                 y > MULTIPLAYER_BUTTON_Y_POS && y < MULTIPLAYER_BUTTON_Y_POS + BUTTON_HEIGHT) {
@@ -99,6 +122,13 @@ public class MainMenuInputProcessor implements InputProcessor {
         return false;
     }
 
+    /**
+     * Определение нажатия на кнопку exit
+     *
+     * @param x x координата нажатия
+     * @param y y координата нажатия
+     * @return true - нажатие произошло, false - нажатия не произошло
+     */
     private boolean onExitButton(float x, float y) {
         if (x > EXIT_BUTTON_X_POS && x < EXIT_BUTTON_X_POS + BUTTON_WIDTH &&
                 y > EXIT_BUTTON_Y_POS && y < EXIT_BUTTON_Y_POS + BUTTON_HEIGHT) {

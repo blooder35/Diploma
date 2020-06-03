@@ -5,10 +5,18 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.diploma.project.maps.blocks.MapBlock;
 
+/**
+ * Актёр - элемент карты
+ */
 public class MapBlockActor extends Actor {
     private MapBlock block;
     private Texture texture;
 
+    /**
+     * ctor
+     *
+     * @param block блок карты
+     */
     public MapBlockActor(MapBlock block) {
         this.block = block;
         this.texture = new Texture(block.getTexturePath());

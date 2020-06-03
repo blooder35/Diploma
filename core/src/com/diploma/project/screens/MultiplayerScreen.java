@@ -25,6 +25,9 @@ import com.diploma.project.states.MultiplayerStates;
 
 import static com.diploma.project.constants.MultiplayerConstants.*;
 
+/**
+ * Экран многопользовательской игры
+ */
 public class MultiplayerScreen implements Screen {
     private DiplomaProject game;
     private MultiplayerStates states;
@@ -43,6 +46,11 @@ public class MultiplayerScreen implements Screen {
     private Image background;
     private Stage stage;
 
+    /**
+     * Конструктор
+     *
+     * @param game игра
+     */
     public MultiplayerScreen(DiplomaProject game) {
         this.game = game;
         this.states = new MultiplayerStates();
@@ -90,6 +98,9 @@ public class MultiplayerScreen implements Screen {
     public void dispose() {
     }
 
+    /**
+     * Установка тектовых полей
+     */
     private void setTextFields() {
         TextField.TextFieldStyle textFieldStyle = new TextField.TextFieldStyle();
         textFieldStyle.fontColor = Color.BLACK;
@@ -121,6 +132,9 @@ public class MultiplayerScreen implements Screen {
         stage.addActor(errorArea);
     }
 
+    /**
+     * Установка названий и рамок полей ввода
+     */
     private void setNameplates() {
         Image nameTextImage = new Image(new Texture(Gdx.files.internal("name.png")));
         nameTextImage.setPosition(NAME_FIELD_NAME_X, NAME_FIELD_NAME_Y);
@@ -142,6 +156,9 @@ public class MultiplayerScreen implements Screen {
         stage.addActor(inputBordersImageForName);
     }
 
+    /**
+     * Установка кнопок
+     */
     private void setButtons() {
         Drawable hostButtonDrawable = new Image(new Texture(Gdx.files.internal(Resources.Multiplayer.MULTIPLAYER_HOST_BUTTON))).getDrawable();
         Drawable hostButtonPressedDrawable = new Image(new Texture(Gdx.files.internal(Resources.Multiplayer.MULTIPLAYER_HOST_BUTTON_PRESSED))).getDrawable();
@@ -190,7 +207,7 @@ public class MultiplayerScreen implements Screen {
                 }
                 try {
                     Client.getInstance().start(ipField.getText(), Integer.parseInt(portField.getText()));
-                    new LobbyClientGameMessage(nameField.getText(),false).sendMessageToServer();
+                    new LobbyClientGameMessage(nameField.getText(), false).sendMessageToServer();
                 } catch (Exception e) {
                     showError("Error while connecting to a server, please check ip address and port");
                     return;
@@ -203,6 +220,11 @@ public class MultiplayerScreen implements Screen {
         stage.addActor(backButton);
     }
 
+    /**
+     * Проверка того, есть ли ошибка при заполнении полей
+     *
+     * @return true - есть ошибка, false - ошибки нет
+     */
     private boolean errorInFields() {
         if (nameField.getText().isEmpty() || ipField.getText().isEmpty() || portField.getText().isEmpty()) {
             showError("You should specify all fields");
@@ -211,6 +233,11 @@ public class MultiplayerScreen implements Screen {
         return false;
     }
 
+    /**
+     * Отобразить ошибку в поле ошибки
+     *
+     * @param message сообщение ошибки
+     */
     private void showError(String message) {
         errorArea.setText(message);
     }

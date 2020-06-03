@@ -6,7 +6,16 @@ import com.diploma.project.multiplayerImpl.communication.messages.client.lobby.L
 import com.diploma.project.multiplayerImpl.communication.messages.client.lobby.StartGameGameMessage;
 import com.diploma.project.multiplayerImpl.communication.messages.server.lobby.LobbyStateMessageServerChanger;
 
+/**
+ * Обработка сервером сообщения, пришедшего от пользователя находящегося в лобби
+ */
 public class LobbyServerProcessor {
+
+    /**
+     * Обработать сообщение
+     * @param clientIdentificator идентификатор пользователя
+     * @param clientMessage Сообщение пользователя, находящегося в лобби
+     */
     public static void process(Integer clientIdentificator, LobbyGameMessage clientMessage) {
         Json json = new Json();
         switch (clientMessage.getType()) {

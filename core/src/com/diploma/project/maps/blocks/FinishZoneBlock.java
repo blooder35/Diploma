@@ -6,10 +6,18 @@ import com.diploma.project.constants.ColorType;
 import com.diploma.project.constants.Resources;
 import com.diploma.project.multiplayerImpl.communication.messages.server.game.PlayerAttributes;
 
+/**
+ * Блок карты - финиш
+ */
 public class FinishZoneBlock extends InteractingMapBlock {
     ColorType previousColorType;
     boolean spotIsFree;
 
+    /**
+     * Конструктор
+     *
+     * @param position координата вектор левого нижнего угла блока
+     */
     public FinishZoneBlock(Vector2 position) {
         super(false, position, new LargeBlockCollision(position), Resources.Game.FINISH_ZONE_BLOCK, ColorType.NONE);
         previousColorType = ColorType.NONE;

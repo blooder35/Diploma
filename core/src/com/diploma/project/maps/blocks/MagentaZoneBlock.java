@@ -6,8 +6,16 @@ import com.diploma.project.constants.ColorType;
 import com.diploma.project.constants.Resources;
 import com.diploma.project.multiplayerImpl.communication.messages.server.game.PlayerAttributes;
 
+/**
+ * Блок карты для смены цвета маджента
+ */
 public class MagentaZoneBlock extends InteractingMapBlock {
 
+    /**
+     * Конструктор
+     *
+     * @param position координата вектор левого нижнего угла блока
+     */
     public MagentaZoneBlock(Vector2 position) {
         super(false, position, new ColorChangingZoneCollision(position), Resources.Game.MAGENTA_ZONE_BLOCK, ColorType.NONE);
     }

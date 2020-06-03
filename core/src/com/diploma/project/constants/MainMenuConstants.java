@@ -1,5 +1,8 @@
 package com.diploma.project.constants;
 
+/**
+ * Константы для элементов интерфейса в главном меню
+ */
 public class MainMenuConstants {
     public static final int BUTTON_WIDTH = 640;
     public static final int BUTTON_HEIGHT = 160;

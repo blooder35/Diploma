@@ -1,5 +1,8 @@
 package com.diploma.project.states;
 
+/**
+ * Состояния меню многопользовательского приложения
+ */
 public class MultiplayerStates {
     private boolean errorWhileConnecting;
     private boolean errorWhileCreatingServer;

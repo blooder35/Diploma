@@ -6,8 +6,16 @@ import com.diploma.project.constants.ColorType;
 import com.diploma.project.constants.Resources;
 import com.diploma.project.multiplayerImpl.communication.messages.server.game.PlayerAttributes;
 
+/**
+ * Синий блок карты, для смены цвета
+ */
 public class BlueZoneBlock extends InteractingMapBlock {
 
+    /**
+     * Конструктор
+     *
+     * @param position координата вектор левого нижнего угла блока
+     */
     public BlueZoneBlock(Vector2 position) {
         super(false, position, new ColorChangingZoneCollision(position), Resources.Game.BLUE_ZONE_BLOCK, ColorType.NONE);
     }

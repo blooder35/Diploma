@@ -21,10 +21,18 @@ import com.diploma.project.multiplayer.server.ServerProcessingThread;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Серверный поток обработки сообщений
+ */
 public class ServerProcessingThreadImpl extends ServerProcessingThread {
     private ApplicationState state;
     private Json json;
 
+    /**
+     * Конструктор потока
+     *
+     * @param state состояние приложения
+     */
     public ServerProcessingThreadImpl(ApplicationState state) {
         super("ServerProcessingThread");
         this.state = state;
@@ -92,6 +100,11 @@ public class ServerProcessingThreadImpl extends ServerProcessingThread {
     }
 
 
+    /**
+     * Установить состояние приложения
+     *
+     * @param state состояние приложения
+     */
     private void setState(ApplicationState state) {
         this.state = state;
     }

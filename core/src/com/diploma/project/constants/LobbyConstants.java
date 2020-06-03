@@ -1,5 +1,8 @@
 package com.diploma.project.constants;
 
+/**
+ * Константы, для элементов интерфейса в лобби
+ */
 public class LobbyConstants {
     public static final int BACK_BUTTON_X = 1520;
     public static final int BACK_BUTTON_Y = 840;

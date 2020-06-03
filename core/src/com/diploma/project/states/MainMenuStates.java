@@ -1,5 +1,8 @@
 package com.diploma.project.states;
 
+/**
+ * Возможные состояния главного меню
+ */
 public class MainMenuStates {
     private boolean startPressed;
     private boolean multiplayerPressed;

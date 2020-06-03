@@ -1,12 +1,20 @@
 package com.diploma.project.multiplayerImpl.communication.messages;
 
 import com.badlogic.gdx.utils.Json;
-import com.diploma.project.multiplayer.client.ClientMessage;
 import com.diploma.project.multiplayerImpl.communication.GameCommunicationMessage;
+import multiplayer.client.ClientMessage;
 
+/**
+ * Абстрактный класс сообщения пользователя
+ */
 public abstract class ClientGameMessage extends ClientMessage implements CommonGameMessage {
 
-    public String getMessageToSend(){
+    /**
+     * Получить строку сообщения для отправки
+     *
+     * @return строка собщения для отправки
+     */
+    public String getMessageToSend() {
         Json json = new Json();
         return json.toJson(this);
     }

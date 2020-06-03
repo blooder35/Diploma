@@ -6,8 +6,16 @@ import com.diploma.project.constants.ColorType;
 import com.diploma.project.constants.Resources;
 import com.diploma.project.multiplayerImpl.communication.messages.server.game.PlayerAttributes;
 
+/**
+ * Блок карты зоны для смены цвета саян
+ */
 public class CyanZoneBlock extends InteractingMapBlock {
 
+    /**
+     * Конструктор
+     *
+     * @param position координата вектор левого нижнего угла блока
+     */
     public CyanZoneBlock(Vector2 position) {
         super(false, position, new ColorChangingZoneCollision(position), Resources.Game.CYAN_ZONE_BLOCK, ColorType.NONE);
     }

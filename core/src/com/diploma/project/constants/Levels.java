@@ -1,5 +1,8 @@
 package com.diploma.project.constants;
 
+/**
+ * Уровни
+ */
 public enum Levels {
     One(1),
     Two(2),

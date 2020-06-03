@@ -7,8 +7,22 @@ import com.diploma.project.maps.blocks.InteractingMapBlock;
 import com.diploma.project.maps.blocks.MapBlock;
 import com.diploma.project.multiplayerImpl.communication.messages.server.game.PlayerAttributes;
 
+/**
+ * Класс-помощник, для расчёта столкновений объектов
+ */
 public class CollisionHelper {
 
+    /**
+     * Метод, совершающий обработку столкновения как абсолютно упругого
+     *
+     * @param player       колизия игрока
+     * @param wall         блок карты
+     * @param posX         координата x игрока
+     * @param posY         координата y игрока
+     * @param playerVector вектор движения игрока
+     * @param colorType    тип цвета игрока
+     * @return вектор движения игрока после столкновения
+     */
     public static Vector2 solidWallBounceCollision(Collision player, MapBlock wall, float posX, float posY, Vector2 playerVector, ColorType colorType) {
         player.setX(posX + playerVector.x);
         player.setY(posY + playerVector.y);
@@ -30,6 +44,15 @@ public class CollisionHelper {
         return playerVector;
     }
 
+    /**
+     * Метод, совершающий обработку взаимодействия игрока с объектами карты
+     *
+     * @param playerAttributes     аттрибуты игрока
+     * @param playerCollision      колизия игрока
+     * @param interactingMapBlocks блок карты, с которым возможно взаимодействие
+     * @param posX                 координата x игрока
+     * @param posY                 координата y игрока
+     */
     public static void interactingCollision(PlayerAttributes playerAttributes, PlayerCollision playerCollision, InteractingMapBlock interactingMapBlocks, float posX, float posY) {
         playerCollision.setX(posX);
         playerCollision.setY(posY);

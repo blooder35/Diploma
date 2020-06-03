@@ -11,28 +11,31 @@ import com.diploma.project.constants.Constants;
 import com.diploma.project.screens.MainMenuScreen;
 
 
+/**
+ * Дипломный проект, игра RGB
+ */
 public class DiplomaProject extends Game {
-	public SpriteBatch batch;
-	public Viewport viewPort;
-	public Json json;
-	
-	@Override
-	public void create () {
-		json = new Json();
-		batch = new SpriteBatch();
-		viewPort = new StretchViewport(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
-		this.setScreen(new MainMenuScreen(this));
-	}
+    public SpriteBatch batch;
+    public Viewport viewPort;
+    public Json json;
 
-	@Override
-	public void render () {
-		Gdx.gl.glClearColor(1, 1, 1, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		super.render();
-	}
-	
-	@Override
-	public void dispose () {
-		batch.dispose();
-	}
+    @Override
+    public void create() {
+        json = new Json();
+        batch = new SpriteBatch();
+        viewPort = new StretchViewport(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
+        this.setScreen(new MainMenuScreen(this));
+    }
+
+    @Override
+    public void render() {
+        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        super.render();
+    }
+
+    @Override
+    public void dispose() {
+        batch.dispose();
+    }
 }

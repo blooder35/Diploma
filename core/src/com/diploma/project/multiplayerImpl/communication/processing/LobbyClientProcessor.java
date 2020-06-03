@@ -4,10 +4,19 @@ import com.diploma.project.multiplayerImpl.communication.messages.server.lobby.L
 import com.diploma.project.multiplayerImpl.communication.messages.server.lobby.PlayerState;
 import com.diploma.project.screens.LobbyScreen;
 
+/**
+ * Обработчик сообщений, пришедших от сервера, пользователем находящимся в лобби
+ */
 public class LobbyClientProcessor {
     private LobbyClientProcessor() {
     }
 
+    /**
+     * Обработать сообщение пришедшие от сервера
+     *
+     * @param screen экран лобби
+     * @param state  сообщение состояния игроков
+     */
     public static void process(LobbyScreen screen, LobbyStateGameMessage state) {
         com.diploma.project.multiplayerImpl.communication.messages.server.lobby.PlayerState playerOneState = state.getPlayerState(0);
         if (playerOneState != null)

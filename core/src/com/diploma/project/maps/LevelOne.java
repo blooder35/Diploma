@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Первый уровень
+ */
 public class LevelOne implements Level {
     private static final int MAXIMUM_PLAYERS = 3;
 
@@ -16,6 +19,9 @@ public class LevelOne implements Level {
     private final List<MapBlock> mapBlocks;
     private final List<InteractingMapBlock> interactingMapBlocks;
 
+    /**
+     * Конструктор
+     */
     public LevelOne() {
         playerStartPositions = new ArrayList<>(MAXIMUM_PLAYERS);
         playerStartPositions.add(0, new Vector2(920, 500));
@@ -98,6 +104,7 @@ public class LevelOne implements Level {
         return MAXIMUM_PLAYERS;
     }
 
+    @Override
     public List<MapBlock> getMapBlocks() {
         return mapBlocks;
     }

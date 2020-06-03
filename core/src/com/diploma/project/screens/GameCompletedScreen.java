@@ -11,6 +11,9 @@ import com.diploma.project.multiplayer.server.Server;
 import com.diploma.project.util.ActorHelper;
 import com.diploma.project.util.TextHelper;
 
+/**
+ * Экран завершения игры
+ */
 public class GameCompletedScreen implements Screen {
     private DiplomaProject game;
     private boolean isServer;
@@ -18,6 +21,13 @@ public class GameCompletedScreen implements Screen {
     Stage stage;
 
 
+    /**
+     * Конструктор
+     *
+     * @param game     игра
+     * @param isServer указатель того, является ли клиент сервером
+     * @param name     имя игрока
+     */
     public GameCompletedScreen(DiplomaProject game, boolean isServer, String name) {
         this.game = game;
         this.isServer = isServer;

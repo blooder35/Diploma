@@ -22,6 +22,9 @@ import com.diploma.project.util.TextHelper;
 
 import static com.diploma.project.constants.LobbyConstants.*;
 
+/**
+ * Экран лобби
+ */
 public class LobbyScreen implements Screen {
     DiplomaProject game;
     boolean isServer;
@@ -46,6 +49,13 @@ public class LobbyScreen implements Screen {
     SelectBox levelSelect;
 
 
+    /**
+     * Конструктор
+     *
+     * @param game     игра
+     * @param isServer является ли клиент сервером
+     * @param name     имя игрока
+     */
     public LobbyScreen(DiplomaProject game, boolean isServer, String name) {
         this.game = game;
         this.isServer = isServer;
@@ -96,30 +106,64 @@ public class LobbyScreen implements Screen {
 
     }
 
+    /**
+     * Добавить информационное сообщение
+     *
+     * @param message сообщение
+     */
     public void appendInfoMessage(String message) {
         infoTextArea.appendText("\n" + message);
     }
 
+    /**
+     * Установить информацию для первого игрока
+     *
+     * @param name  имя
+     * @param ready готов ли игрок
+     */
     public void setPlayer1Info(String name, boolean ready) {
         appendPlayerInfo(player1Name, player1Border, player1ReadyBorder, player1KickButton, name, ready);
     }
 
+    /**
+     * Установить информацию для второго игрока
+     *
+     * @param name  имя
+     * @param ready готов ли игрок
+     */
     public void setPlayer2Info(String name, boolean ready) {
         appendPlayerInfo(player2Name, player2Border, player2ReadyBorder, player2KickButton, name, ready);
     }
 
+    /**
+     * Установить информацию для третьего игрока
+     *
+     * @param name  имя
+     * @param ready готов ли игрок
+     */
     public void setPlayer3Info(String name, boolean ready) {
         appendPlayerInfo(player3Name, player3Border, player3ReadyBorder, player3KickButton, name, ready);
     }
 
+    /**
+     * Установить флаг того, что игра началась
+     */
     public void setGameStarted() {
         gameStarted = true;
     }
 
+    /**
+     * Установить идентификатор выбранного уровня
+     *
+     * @param selectedLevel выбранный уровень
+     */
     public void setSelectedLevel(int selectedLevel) {
         this.selectedLevel = selectedLevel;
     }
 
+    /**
+     * Добавление актёров на сцену
+     */
     private void setActors() {
         if (isServer) {
             setServerButtons();
@@ -153,6 +197,9 @@ public class LobbyScreen implements Screen {
         player3Name = ActorHelper.addTextField(stage, "", PLAYER_3_NAME_X, PLAYER_3_NAME_Y, PLAYER_NAME_WIDTH, PLAYER_NAME_HEIGHT, false, true, playerNamesTextFieldStyle);
     }
 
+    /**
+     * Добавление на сцену кнопок, доступных только серверу
+     */
     private void setServerButtons() {
         ActorHelper.addButtonActor(stage, Resources.Lobby.LOBBY_START_BUTTON, Resources.Lobby.LOBBY_START_BUTTON_PRESSED, LobbyConstants.START_BUTTON_X, LobbyConstants.START_BUTTON_Y, true, new ChangeListener() {
             @Override
@@ -197,6 +244,9 @@ public class LobbyScreen implements Screen {
                 Levels.One.toString(), Levels.Two.toString(), Levels.Three.toString(), Levels.Four.toString(), Levels.Five.toString());
     }
 
+    /**
+     * Добавление кнопок клиента
+     */
     private void setClientButtons() {
         ActorHelper.addButtonActor(stage, Resources.Lobby.LOBBY_READY_BUTTON, Resources.Lobby.LOBBY_READY_BUTTON_PRESSED, LobbyConstants.START_BUTTON_X, LobbyConstants.START_BUTTON_Y, true, new ChangeListener() {
             @Override
@@ -208,6 +258,16 @@ public class LobbyScreen implements Screen {
         });
     }
 
+    /**
+     * Добавление инофрмации об игроке
+     *
+     * @param playerName        поле имени игрока
+     * @param playerBorder      рамка игрока
+     * @param playerReadyBorder рамка готовности игрока
+     * @param playerKickButton  кнопка "выгнать игрока"
+     * @param name              имя игрока
+     * @param ready             флаг того, готов ли игрок к началу игры
+     */
     private void appendPlayerInfo(TextField playerName, Image playerBorder, Image playerReadyBorder, Button playerKickButton, String name, boolean ready) {
         if (!"".equals(name)) {
             playerName.setVisible(true);
@@ -231,6 +291,11 @@ public class LobbyScreen implements Screen {
         }
     }
 
+    /**
+     * Проверка того, что все готовы
+     *
+     * @return true - все готовы, false - кто-то не готов
+     */
     private boolean isEveryoneReady() {
         //first is always a server
         if (!"".equals(player2Name.getText()) && !player2ReadyBorder.isVisible())

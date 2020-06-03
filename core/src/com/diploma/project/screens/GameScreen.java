@@ -23,6 +23,9 @@ import com.diploma.project.util.ActorHelper;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Экран игры
+ */
 public class GameScreen implements Screen {
     DiplomaProject game;
     boolean isServer;
@@ -37,6 +40,14 @@ public class GameScreen implements Screen {
     boolean levelFinished;
     boolean interacting;
 
+    /**
+     * Конструктор
+     *
+     * @param game         игра
+     * @param isServer     является ли клиент сервером
+     * @param name         имя игрока
+     * @param currentLevel текущий уровень
+     */
     public GameScreen(DiplomaProject game, boolean isServer, String name, int currentLevel) {
         this.game = game;
         this.isServer = isServer;
@@ -90,10 +101,23 @@ public class GameScreen implements Screen {
 
     }
 
+    /**
+     * Передвинуть актёра игрока
+     *
+     * @param index идентификатор актёра
+     * @param posX  х координата актёра
+     * @param posY  y координата актёра
+     */
     public void movePlayer(int index, float posX, float posY) {
         playerActors.get(index).setPosition(posX, posY);
     }
 
+    /**
+     * Изменить тип цвета актёра игрока
+     *
+     * @param index     идентификатор актёра
+     * @param colorType тип цвета
+     */
     public void changePlayerColorType(int index, ColorType colorType) {
         PlayerActor playerActor = playerActors.get(index);
         if (playerActor.getColorType() != colorType) {
@@ -102,10 +126,16 @@ public class GameScreen implements Screen {
         }
     }
 
+    /**
+     * Установить флаг того, что уровень пройден
+     */
     public void setLevelFinished() {
         levelFinished = true;
     }
 
+    /**
+     * Подготовка картинок и текстур к отрисовке
+     */
     private void prepareImages() {
         Level level = MapManager.getInstance().getLevel(currentLevel);
         for (int i = 0; i < Configuration.getInstance().getMaximumAllowedClients(); i++) {
@@ -119,6 +149,9 @@ public class GameScreen implements Screen {
         }
     }
 
+    /**
+     * Обработка нажатий клавиатуры пользователем
+     */
     private void inputProcessing() {
         x = 0;
         y = 0;

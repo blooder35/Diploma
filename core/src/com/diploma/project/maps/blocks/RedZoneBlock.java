@@ -6,8 +6,16 @@ import com.diploma.project.constants.ColorType;
 import com.diploma.project.constants.Resources;
 import com.diploma.project.multiplayerImpl.communication.messages.server.game.PlayerAttributes;
 
+/**
+ * Блок карты для смены цвета красный
+ */
 public class RedZoneBlock extends InteractingMapBlock {
 
+    /**
+     * Конструктор
+     *
+     * @param position вектор - координаты левого нижнего угла колизии
+     */
     public RedZoneBlock(Vector2 position) {
         super(false, position, new ColorChangingZoneCollision(position), Resources.Game.RED_ZONE_BLOCK, ColorType.NONE);
     }

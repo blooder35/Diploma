@@ -11,6 +11,9 @@ import com.diploma.project.states.MainMenuStates;
 
 import static com.diploma.project.constants.MainMenuConstants.*;
 
+/**
+ * Экран главного меню игры
+ */
 public class MainMenuScreen implements Screen {
     final DiplomaProject game;
     private MainMenuStates states;
@@ -23,6 +26,11 @@ public class MainMenuScreen implements Screen {
     private Texture mainMenuBackGround;
     private OrthographicCamera camera;
 
+    /**
+     * Конструктор
+     *
+     * @param game игра
+     */
     public MainMenuScreen(final DiplomaProject game) {
         this.game = game;
         states = new MainMenuStates();
@@ -34,8 +42,8 @@ public class MainMenuScreen implements Screen {
         exitButtonPressed = new Texture(Gdx.files.internal("exitButtonPressed.png"));
         mainMenuBackGround = new Texture(Gdx.files.internal(Resources.MAIN_MENU_BACKGROUND));
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 1920,1080);
-        Gdx.input.setInputProcessor(new MainMenuInputProcessor(states,camera));
+        camera.setToOrtho(false, 1920, 1080);
+        Gdx.input.setInputProcessor(new MainMenuInputProcessor(states, camera));
     }
 
     @Override
@@ -43,11 +51,11 @@ public class MainMenuScreen implements Screen {
         game.batch.begin();
         game.batch.draw(mainMenuBackGround, 0, 0);
         Texture buttonToDraw = states.isStartPressed() ? startButtonPressed : startButton;
-        game.batch.draw(buttonToDraw,START_BUTTON_X_POS, START_BUTTON_Y_POS);
+        game.batch.draw(buttonToDraw, START_BUTTON_X_POS, START_BUTTON_Y_POS);
         buttonToDraw = states.isMultiplayerPressed() ? multiplayerButtonPressed : multiplayerButton;
-        game.batch.draw(buttonToDraw,MULTIPLAYER_BUTTON_X_POS, MULTIPLAYER_BUTTON_Y_POS);
+        game.batch.draw(buttonToDraw, MULTIPLAYER_BUTTON_X_POS, MULTIPLAYER_BUTTON_Y_POS);
         buttonToDraw = states.isExitPressed() ? exitButtonPressed : exitButton;
-        game.batch.draw(buttonToDraw,EXIT_BUTTON_X_POS, EXIT_BUTTON_Y_POS);
+        game.batch.draw(buttonToDraw, EXIT_BUTTON_X_POS, EXIT_BUTTON_Y_POS);
         game.batch.end();
         proceedScreenChangeEvents();
     }
@@ -81,6 +89,9 @@ public class MainMenuScreen implements Screen {
     public void dispose() {
     }
 
+    /**
+     * Обработать смену экранов приложения
+     */
     private void proceedScreenChangeEvents() {
         if (states.isProceesToStart()) {
         } else if (states.isProceedToMultiplayer()) {

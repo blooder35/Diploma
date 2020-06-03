@@ -4,11 +4,20 @@ import com.diploma.project.multiplayerImpl.communication.messages.server.game.Ga
 import com.diploma.project.multiplayerImpl.communication.messages.server.game.PlayerGameInfo;
 import com.diploma.project.screens.GameScreen;
 
+/**
+ * Обработчик сообщения, пришедшего от сервера, пользователем в игре
+ */
 public class GameClientProcessor {
     private GameClientProcessor() {
 
     }
 
+    /**
+     * Обработать сообщение пришедшее от сервера
+     *
+     * @param screen  экран игры пользователя
+     * @param message сообщение сервера
+     */
     public static void process(GameScreen screen, GameStateGameMessage message) {
         int index = 0;
         for (PlayerGameInfo info : message.getPlayerGameInfoList()) {

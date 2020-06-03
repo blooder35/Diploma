@@ -1,5 +1,8 @@
 package com.diploma.project.constants;
 
+/**
+ * Константы для элементов интерфейса в меню подключения к многопользовательской игре
+ */
 public class MultiplayerConstants {
     public static final int IP_INPUT_FIELD_BORDER_X = 960;
     public static final int IP_INPUT_FIELD_BORDER_Y = 480;

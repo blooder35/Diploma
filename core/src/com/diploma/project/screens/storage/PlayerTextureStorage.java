@@ -7,9 +7,15 @@ import com.diploma.project.constants.Resources;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Хранилище текстур для игрока
+ */
 public class PlayerTextureStorage {
     Map<ColorType, Texture> playerTextures;
 
+    /**
+     * Конструктор
+     */
     public PlayerTextureStorage() {
         playerTextures = new HashMap<>();
         playerTextures.put(ColorType.WHITE, new Texture(Resources.Game.WHITE_PLAYER_CIRCLE_IMAGE));
@@ -22,6 +28,12 @@ public class PlayerTextureStorage {
         playerTextures.put(ColorType.BLACK, new Texture(Resources.Game.BLACK_PLAYER_CIRCLE_IMAGE));
     }
 
+    /**
+     * Получить текстуру по типу цвета
+     *
+     * @param colorType тип цвета
+     * @return текстура, готовая к отрисовке
+     */
     public Texture getPlayerTexture(ColorType colorType) {
         return playerTextures.get(colorType);
     }

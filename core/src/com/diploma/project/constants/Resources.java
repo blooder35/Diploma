@@ -1,5 +1,8 @@
 package com.diploma.project.constants;
 
+/**
+ * Хранилище путей к ресурсам игры
+ */
 public class Resources {
     public static final String TEXT_FONT = "diplomaFont.fnt";
     public static final String TEXT_CURSOR = "cursor.png";
@@ -7,6 +10,9 @@ public class Resources {
     public static final String MAIN_MENU_BACKGROUND = "mainMenuBackground.png";
     public static final String LOBBY_MENU_BACKGROUND = "lobbyMenuBackground.png";
 
+    /**
+     * Пути к ресурсам экрана подключения к многопользовательской игры
+     */
     public class Multiplayer {
         public static final String MULTIPLAYER_BACK_BUTTON = "multiplayer/backButton.png";
         public static final String MULTIPLAYER_BACK_BUTTON_PRESSED = "multiplayer/backButtonPressed.png";
@@ -16,6 +22,9 @@ public class Resources {
         public static final String MULTIPLAYER_HOST_BUTTON_PRESSED = "multiplayer/hostButtonPressed.png";
     }
 
+    /**
+     * Пути к ресурсам экрана лобби
+     */
     public class Lobby {
         public static final String LOBBY_START_BUTTON = "lobby/startButton.png";
         public static final String LOBBY_START_BUTTON_PRESSED = "lobby/startButtonPressed.png";
@@ -31,6 +40,9 @@ public class Resources {
         public static final String LEVEL_NAMEPLATE = "lobby/levelNameplate.png";
     }
 
+    /**
+     * Пути к ресурсам игры
+     */
     public class Game {
         public static final String WHITE_PLAYER_CIRCLE_IMAGE = "game/whitePlayerCircle.png";
         public static final String RED_PLAYER_CIRCLE_IMAGE = "game/redPlayerCircle.png";
